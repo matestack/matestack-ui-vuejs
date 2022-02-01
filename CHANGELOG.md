@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.0 Release - Feb 2022
+
+In Progress
+
 ## v2.1.1 Release - 2021-06-30
 
 ### Bugfixes
