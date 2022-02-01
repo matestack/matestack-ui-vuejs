@@ -2,7 +2,7 @@ require 'capybara/rspec'
 require 'capybara/rails'
 require "selenium/webdriver"
 
-require "matestack/ui/core"
+require "matestack/ui/vue_js"
 
 Capybara.server_port = 33123
 Capybara.server_host = "0.0.0.0"
