@@ -1,5 +1,5 @@
 # This migration comes from active_storage (originally 20191206030411)
-if Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1
+if Rails::VERSION::MAJOR >= 7 || (Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1)
   class CreateActiveStorageVariantRecords < ActiveRecord::Migration[6.0]
     def change
       create_table :active_storage_variant_records do |t|
@@ -14,7 +14,7 @@ if Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1
 else
   class CreateActiveStorageVariantRecords < ActiveRecord::Migration[5.2]
     def change
-      
+
     end
   end
 end

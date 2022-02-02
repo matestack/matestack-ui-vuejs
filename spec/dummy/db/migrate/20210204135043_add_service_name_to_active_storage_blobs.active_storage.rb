@@ -1,5 +1,5 @@
 # This migration comes from active_storage (originally 20190112182829)
-if Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1
+if Rails::VERSION::MAJOR >= 7 || (Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1)
   class AddServiceNameToActiveStorageBlobs < ActiveRecord::Migration[6.0]
     def up
       unless column_exists?(:active_storage_blobs, :service_name)

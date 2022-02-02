@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_02_04_135044) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: 6, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -32,8 +32,15 @@ ActiveRecord::Schema.define(version: 2021_02_04_135044) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.integer "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "dummy_child_models", force: :cascade do |t|
@@ -42,8 +49,8 @@ ActiveRecord::Schema.define(version: 2021_02_04_135044) do
     t.integer "status"
     t.text "some_data"
     t.text "more_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.bigint "dummy_model_id"
     t.index ["dummy_model_id"], name: "index_dummy_child_models_on_dummy_model_id"
   end
@@ -54,8 +61,8 @@ ActiveRecord::Schema.define(version: 2021_02_04_135044) do
     t.integer "status"
     t.text "some_data"
     t.text "more_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "test_models", force: :cascade do |t|
@@ -64,11 +71,12 @@ ActiveRecord::Schema.define(version: 2021_02_04_135044) do
     t.integer "status"
     t.text "some_data"
     t.text "more_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.boolean "some_boolean_value"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "dummy_child_models", "dummy_models"
 end
