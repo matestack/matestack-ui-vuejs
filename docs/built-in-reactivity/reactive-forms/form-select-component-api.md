@@ -182,8 +182,9 @@ end
 Generic code:
 
 ```javascript
-Vue.component('my-form-select', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formSelectMixin],
+const myFormSelect = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formSelectMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -200,9 +201,13 @@ Vue.component('my-form-select', {
     // you can access the default initial value via this.componentConfig["init_value"]
     // if you need to, you can access your own component config data which added
     // within the prepare method of the corresponding Ruby class
-    // this.componentConfig["foo"] would be "bar" in this case
+    // this.props["foo"] would be "bar" in this case
   }
-});
+}
+export default myFormSelect
+
+// and register in your application js file like:
+appInstance.component('my-form-select', myFormSelect) // register at appInstance
 ```
 
 In order to support the `select2.js` library, you would do something like this:
@@ -210,8 +215,9 @@ In order to support the `select2.js` library, you would do something like this:
 `app/matestack/componenst/my_form_select.js`
 
 ```javascript
-Vue.component('my-form-select', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formSelectMixin],
+const myFormSelect = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formSelectMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -230,15 +236,18 @@ Vue.component('my-form-select', {
       self.setValue(e.params.data.id)
     });
   }
-});
+}
+export default myFormSelect
+
+// and register in your application js file like:
+appInstance.component('my-form-select', myFormSelect) // register at appInstance
 ```
 
-* Don't forget to require the custom component JavaScript according to your JS setup!
+* Don't forget to require and register the custom component JavaScript according to your JS setup!
 * Finally, use it within a `matestack_form`:
 
 ```ruby
 matestack_form some_form_config do
-  Components::MyFormSelect.(key: :foo, options: [1,2,3])
+  Components::MyFormSelect.call(key: :foo, options: [1,2,3])
 end
 ```
-

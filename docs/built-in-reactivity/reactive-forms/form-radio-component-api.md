@@ -161,8 +161,9 @@ Generic code:
 `app/matestack/components/my_form_radio.js`
 
 ```javascript
-Vue.component('my-form-radio', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formRadioMixin],
+const myFormRadio = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formRadioMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -181,15 +182,18 @@ Vue.component('my-form-radio', {
     // within the prepare method of the corresponding Ruby class
     // this.componentConfig["foo"] would be "bar" in this case
   }
-});
+}
+export default myFormRadio
+
+// and register in your application js file like:
+appInstance.component('my-form-radio', myFormRadio) // register at appInstance
 ```
 
-* Don't forget to require the custom component JavaScript according to your JS setup!
+* Don't forget to require and register the custom component JavaScript according to your JS setup!
 * Finally, use it within a `matestack_form`:
 
 ```ruby
 matestack_form some_form_config do
-  Components::MyFormRadio.(key: :foo, options: [1,2,3])
+  Components::MyFormRadio.call(key: :foo, options: [1,2,3])
 end
 ```
-

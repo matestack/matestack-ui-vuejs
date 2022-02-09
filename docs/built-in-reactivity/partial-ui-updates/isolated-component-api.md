@@ -166,7 +166,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.()
+    MyIsolated.call()
   end
 
 end
@@ -181,8 +181,8 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.(defer: true)
-    MyIsolated.(defer: 2000)
+    MyIsolated.call(defer: true)
+    MyIsolated.call(defer: 2000)
   end
 
 end
@@ -197,7 +197,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.(rerender_on: 'update_time')
+    MyIsolated.call(rerender_on: 'update_time')
     onclick emit: 'update_time' do
       button 'Update Time!'
     end
@@ -215,7 +215,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.(rerender_on: 'update_time', rerender_delay: 300)
+    MyIsolated.call(rerender_on: 'update_time', rerender_delay: 300)
     onclick emit: 'update_time' do
       button 'Update Time!'
     end
@@ -233,7 +233,7 @@ class Home < Matestack::Ui::Page
 
   def response
    h1 'Welcome'
-    MyIsolated.(init_on: 'init_time')
+    MyIsolated.call(init_on: 'init_time')
     onclick emit: 'init_time' do
       button 'Init Time!'
     end
@@ -284,7 +284,7 @@ class Match::Pages::Index < Matestack::Ui::Page
 
   def response
     Match.all.each do |match|
-      Components::Match::IsolatedScore.(public_options: { id: match.id }, rerender_on: "update_match_#{match.id}")
+      Components::Match::IsolatedScore.call(public_options: { id: match.id }, rerender_on: "update_match_#{match.id}")
     end
   end
 

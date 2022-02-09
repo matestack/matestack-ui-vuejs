@@ -7,12 +7,12 @@ Please read the [ActionCable Guide](../../integrations/action-cable.md) if you n
 `app/javascript/channels/matestack_ui_core_channel.js`
 
 ```javascript
-import MatestackUiCore form 'matestack-ui-core';
+import MatestackUiVueJs form 'matestack-ui-core';
 
-consumer.subscriptions.create("MatestackUiCoreChannel", {
+consumer.subscriptions.create("MatestackUiVueJsChannel", {
   //...
   received(data) {
-    MatestackUiCore.eventHub.$emit(data.event, data)
+    MatestackUiVueJs.eventHub.$emit(data.event, data)
   }
 });
 ```
@@ -29,7 +29,7 @@ class Page < Matestack::Ui::Page
       # this block will be rendered as initial content and may be
       # modified on the client side later upon receiving defined events
       DummyModel.all.each do |instance|
-        ListComponent.(item: instance)
+        ListComponent.call(item: instance)
       end
     end
   end
@@ -69,7 +69,7 @@ In your app, page or component:
 ```ruby
 cable id: 'foo', append_on: "model_created" do
   DummyModel.all.each do |instance|
-    ListComponent.(item: instance)
+    ListComponent.call(item: instance)
   end
 end
 ```
@@ -79,7 +79,7 @@ In your controller:
 ```ruby
 ActionCable.server.broadcast("matestack_ui_core", {
   event: "model_created",
-  data: ListComponent.(item: @new_model_instance)
+  data: ListComponent.call(item: @new_model_instance)
 })
 ```
 
@@ -94,7 +94,7 @@ In your app, page or component:
 ```ruby
 cable id: 'foo', prepend_on: "model_created" do
   DummyModel.all.each do |instance|
-    ListComponent.(item: instance)
+    ListComponent.call(item: instance)
   end
 end
 ```
@@ -104,7 +104,7 @@ In your controller:
 ```ruby
 ActionCable.server.broadcast("matestack_ui_core", {
   event: "model_created",
-  data: ListComponent.(item: @new_model_instance)
+  data: ListComponent.call(item: @new_model_instance)
 })
 ```
 
@@ -119,7 +119,7 @@ In your app, page or component:
 ```ruby
 cable id: 'foo', replace_on: "model_created" do
   DummyModel.all.each do |instance|
-    ListComponent.(item: instance)
+    ListComponent.call(item: instance)
   end
 end
 ```
@@ -129,7 +129,7 @@ In your controller:
 ```ruby
 ActionCable.server.broadcast("matestack_ui_core", {
   event: "model_created",
-  data: ListComponent.(item: @new_model_instance)
+  data: ListComponent.call(item: @new_model_instance)
 })
 ```
 
@@ -144,7 +144,7 @@ In your app, page or component:
 ```ruby
 cable id: 'foo', append_on: "model_created" do
   DummyModel.all.each do |instance|
-    ListComponent.(item: instance)
+    ListComponent.call(item: instance)
   end
 end
 ```
@@ -169,7 +169,7 @@ In your app, page or component:
 ```ruby
 cable id: 'foo', delete_on: "model_deleted" do
   DummyModel.all.each do |instance|
-    ListComponent.(item: instance)
+    ListComponent.call(item: instance)
   end
 end
 ```

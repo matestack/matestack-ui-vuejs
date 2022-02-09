@@ -30,12 +30,12 @@ Matestack's `app/controllers/user_controller.rb`:
 ```ruby
 class UserController < ApplicationController
 
-  matestack_app UserApp
+  matestack_layout SomeApp::Layout
 
   def show
     @user = User.find_by(id: params[:id])
     authorize @user # checking Pundit policy
-    render UserApp::Pages::Show # matestack page responder
+    render SomeApp::Pages::Show # matestack page responder
   end
 
 end
@@ -64,14 +64,13 @@ Matestack's `app/controllers/user_controller.rb`:
 ```ruby
 class UserController < ApplicationController
 
-  matestack_app UserApp
+  matestack_layout SomeApp::Layout
 
   def show
     @user = User.find_by(id: params[:id])
     authorize! :read, @user # checking for CanCanCan ability
-    render UserApp::Pages::Show # matestack page responder
+    render SomeApp::Pages::Show # matestack page responder
   end
 
 end
 ```
-

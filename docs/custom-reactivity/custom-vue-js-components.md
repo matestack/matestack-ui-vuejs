@@ -19,7 +19,7 @@ class SomeComponent < Matestack::Ui::VueJsComponent
 
   def response
     div class: "some-root-element" do
-      plain "hello {{ foo }}!"
+      plain "hello {{ vc.foo }}!"
     end
   end
 
@@ -35,49 +35,66 @@ The Vue.js JavaScript component is defined in a separate JavaScript file:
 `app/matestack/components/some_component.js`
 
 ```javascript
-import Vue from "vue/dist/vue.esm";
-import MatestackUiCore from "matestack-ui-core";
+import MatestackUiVueJs from "matestack-ui-vuejs";
 
-Vue.component('some-component', {
-  mixins: [MatestackUiCore.componentMixin],
+const someComponent = {
+  mixins: [MatestackUiVueJs.componentMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {
       foo: "bar"
     };
   },
   mounted(){
-    console.log(this.props['foo'])
+    console.log(this.foo)
   }
-});
+}
+
+export default someComponent
 ```
 
 It can be placed anywhere in your apps folder structure, but we recommend to put it right next to the Ruby component file.
 
 {% hint style="info" %}
-The Vue.js JavaScript file needs to be imported by some kind of JavaScript package manager. We recommend`Webpacker`
+The Vue.js JavaScript file needs to be imported by some kind of JavaScript package manager.
 {% endhint %}
 
 For **Webpacker** it would look like this:
 
-```javascript
-// app/javascript/packs/application.js
-import MatestackUiCore from 'matestack-ui-core'
-import '../../../app/matestack/components/some_component'
+`javascript/packs/application.js`
+```js
+import { createApp } from 'vue'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
+
+import someComponent from '../../../app/matestack/components/some_component' // import component definition from source
+
+const appInstance = createApp({})
+
+appInstance.component('some-component', someComponent) // register at appInstance
+
+document.addEventListener('DOMContentLoaded', () => {
+  MatestackUiVueJs.mount(appInstance)
+})
 ```
 
 If setup correctly, Matestack will render the component to:
 
 ```markup
-<component is='some-component' :props='{}' :params='{}' inline-template>
-  <div class="some-root-element">
-    hello {{ foo }}!
-  </div>
+<component is='some-component' :props='{}' :params='{}'>
+  <matestack-component-tempate>
+    <div class="some-root-element">
+      hello {{ vc.foo }}!
+    </div>
+  </matestack-component-tempate>
 </component>
 ```
 
-As you can see, the component tag is referencing the Vue.js JavaScript component via `is` and tells the JavaScript component that it should use the inner html \(coming from the `response` method\) as the `inline-template` of the component.
+As you can see, the component tag is referencing the Vue.js JavaScript component via `is` and tells the JavaScript component that it should use the inner html \(coming from the `response` method\) as the template of the component.
 
-`{{ foo }}` will be evaluated to "bar" as soon as Vue.js has booted and mounted the component in the browser.
+`{{ vc.foo }}` will be evaluated to "bar" as soon as Vue.js has booted and mounted the component in the browser. `{{ foo }}` is not working!
+
+The prefix `vc.` is short for `Vue Component` and is necessary for referencing the correct component scope. Within the JavaScript file, you still simply use `this.`
+The prefix is required since Vue 3 removed proper inline template support. Behind the scenes MatestackUiVueJs is using Vue's `default slot` mechanism in order to enable inline templates.
 
 Matestack will inject JSON objects into the Vue.js JavaScript component through the `props` and `params` tags if either props or params are available. This data is injected once on initial server side rendering of the component's markup. See below, how you can pass in data to the Vue.js JavaScript component.
 
@@ -89,7 +106,7 @@ The basic Vue.js Ruby component API is the same as described within the [compone
 
 ### Referencing the Vue.js JavaScript component
 
-As seen above, the Vue.js JavaScript component name has to be referenced in the Vue.js Ruby component using the `vue_js_component_name` class method
+As seen above, the Vue.js JavaScript component name has to be referenced in the Vue.js Ruby component using the `vue_name` class method
 
 `app/matestack/components/some_component.rb`
 
@@ -132,47 +149,23 @@ within the Vue.js JavaScript component.
 
 ## Vue.js JavaScript component API
 
-### Component mixin
+### Component mixin and template
 
 `app/matestack/components/some_component.js`
 
 ```javascript
-import Vue from "vue/dist/vue.esm";
-import MatestackUiCore from "matestack-ui-core";
+import MatestackUiVueJs from "matestack-ui-vuejs";
 
-Vue.component('some-component', {
-  mixins: [MatestackUiCore.componentMixin],
+const someCompoent = {
+  mixins: [MatestackUiVueJs.componentMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   //...
-});
+};
+
+//...
 ```
 
-Please make sure to integrate the `componentMixin` which gives the JavaScript component some essential functionalities in order to work properly within matestack
-
-### Component config
-
-The JavaScript component can access the serverside injected data like:
-
-```javascript
-this.props["some_serverside_data"]
-```
-
-if implemented like
-
-`app/matestack/components/some_component.rb`
-
-```ruby
-class SomeComponent < Matestack::Ui::VueJsComponent
-
-  vue_name "some-component"
-
-   def vue_props
-    {
-      some_serverside_data: "bar"
-    }
-  end
-
-end
-```
+Please make sure to integrate the `componentMixin` and `template` which gives the JavaScript component some essential functionalities in order to work properly within MatestackUiVueJs.
 
 ### Params
 
@@ -186,5 +179,14 @@ within the JavaScript component.
 
 ### Vue.js API
 
-As we're pretty much implementing pure Vue.js components, you can refer to the [Vue.js guides](https://vuejs.org/v2/guide/) in order to learn more about Vue.js component usage.
+As we're pretty much implementing pure Vue.js components, you can refer to the [Vue.js guides](https://vuejs.org/v3/guide/) in order to learn more about Vue.js component usage.
 
+**Please note the following differences from the original Vue.js API:**
+
+#### component $refs
+
+- use `this.getRefs()` instead of `this.$refs`
+
+#### component $el
+
+- use `this.getElement()` instead of `this.$el`

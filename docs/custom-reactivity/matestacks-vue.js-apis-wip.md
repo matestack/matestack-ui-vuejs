@@ -9,32 +9,33 @@ Matestack offers an event hub, which can be used to communicate between componen
 `app/matestack/components/some_component.js`
 
 ```javascript
-import Vue from "vue/dist/vue.esm";
-import MatestackUiCore from "matestack-ui-core";
+import MatestackUiVueJs from "matestack-ui-vuejs";
 
-Vue.component('some-component', {
-  mixins: [MatestackUiCore.componentMixin],
+const someComponent = {
+  mixins: [MatestackUiVueJs.componentMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {}
   },
   mounted(){
-    MatestackUiCore.eventHub.$emit("some-event", { some: "optional data" })
+    MatestackUiVueJs.eventHub.$emit("some-event", { some: "optional data" })
   }
-})
+}
+export default someComponent
 ```
 
-Use `MatestackUiCore.eventHub.$emit(EVENT_NAME, OPTIONAL PAYLOAD)`
+Use `MatestackUiVueJs.eventHub.$emit(EVENT_NAME, OPTIONAL PAYLOAD)`
 
 ### Receiving events
 
 `app/matestack/components/some_component.js`
 
 ```javascript
-import Vue from "vue/dist/vue.esm";
-import MatestackUiCore from "matestack-ui-core";
+import MatestackUiVueJs from "matestack-ui-vuejs";
 
-Vue.component('some-component', {
-  mixins: [MatestackUiCore.componentMixin],
+const someComponent =  {
+  mixins: [MatestackUiVueJs.componentMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {}
   },
@@ -44,13 +45,27 @@ Vue.component('some-component', {
     }
   },
   mounted(){
-    MatestackUiCore.eventHub.$on("some-event", this.reactToEvent)
+    MatestackUiVueJs.eventHub.$on("some-event", this.reactToEvent)
   },
-  beforeDestroy(){
-    MatestackUiCore.eventHub.$off("some-event", this.reactToEvent)
+  beforeUnmount(){
+    MatestackUiVueJs.eventHub.$off("some-event", this.reactToEvent)
   }
-})
+}
+export default someComponent
 ```
 
-Make sure to cancel the event listener within the `beforeDestroy` hook!
+Make sure to cancel the event listener within the `beforeUnmount` hook!
 
+## General Vue.js API
+
+As we're pretty much implementing pure Vue.js components, you can refer to the [Vue.js guides](https://vuejs.org/v3/guide/) in order to learn more about Vue.js component usage.
+
+**Please note the following differences from the original Vue.js API:**
+
+#### component $refs
+
+- use `this.getRefs()` instead of `this.$refs`
+
+#### component $el
+
+- use `this.getElement()` instead of `this.$el`

@@ -83,7 +83,7 @@ class ExampleAppPagesController < ExampleController
 
   include Matestack::Ui::Core::Helper
 
-  matestack_app ExampleApp
+  matestack_layout ExampleApp::Layout
 
   def page1
     render ExampleApp::Pages::ExamplePage
@@ -99,20 +99,24 @@ end
 Then, we define our example app layout with a navigation that consists of two transition components!
 
 ```ruby
-class ExampleApp::Apps < Matestack::Ui::App
+class ExampleApp::Layout < Matestack::Ui::Layout
 
   def response
     h1 'My Example App Layout'
-    nav do
-      transition path: page1_path do
-        button 'Page 1'
+    matestack_vue_js_app do
+      nav do
+        transition path: page1_path do
+          button 'Page 1'
+        end
+        transition path: page2_path do
+          button 'Page 2'
+        end
       end
-      transition path: page2_path do
-        button 'Page 2'
+      main do
+        page_switch do
+          yield
+        end
       end
-    end
-    main do
-      yield
     end
   end
 
@@ -157,4 +161,3 @@ Now, we can visit our first example page via `localhost:3000/my_example_app/page
 After clicking on the `Page 2`-button, we get transferred to our second page \(`This is Page 2`\) without re-loading the whole page.
 
 If we then click the other button available \(`Back to Page 1`\), we get transferred back to the first page, again without re-loading the whole page. This behavior can save quite some request payload \(and therefore loading time\) as only the relevant content on a page gets replaced!
-

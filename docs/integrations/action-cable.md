@@ -6,23 +6,23 @@ In this guide we will provide information on how to create channels, consumers a
 
 ## Setup
 
-Create a channel using the rails generator. Run the command `rails generate channel MatestackUiCoreChannel`.
+Create a channel using the rails generator. Run the command `rails generate channel MatestackUiVueJsChannel`.
 
 This will create a `app/javascript/channels/matestack_ui_core_channel.js` file where you can setup your subscriptions.
 
-It also generates the corresponding server side `MatestackUiCoreChannel < ApplicationCable::Channel` class.
+It also generates the corresponding server side `MatestackUiVueJsChannel < ApplicationCable::Channel` class.
 
-The `matestack_ui_core_channel.js` is responsible to create a subscription to the "MatestackUiCoreChannel".
+The `matestack_ui_core_channel.js` is responsible to create a subscription to the "MatestackUiVueJsChannel".
 
-All we need to do is to tell this channel that it should trigger an event using the `MatestackUiCore.eventHub` with the received data.
+All we need to do is to tell this channel that it should trigger an event using the `MatestackUiVueJs.eventHub` with the received data.
 
 `app/javascript/channels/matestack_ui_core_channel.js`
 
 ```javascript
-import MatestackUiCore from "matestack-ui-core"
+import MatestackUiVueJs from "matestack-ui-vuejs"
 import consumer from "./consumer"
 
-consumer.subscriptions.create("MatestackUiCoreChannel", {
+consumer.subscriptions.create("MatestackUiVueJsChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
   },
@@ -32,7 +32,7 @@ consumer.subscriptions.create("MatestackUiCoreChannel", {
   },
 
   received(data) {
-    MatestackUiCore.eventHub.$emit(data.event, data)
+    MatestackUiVueJs.eventHub.$emit(data.event, data)
   }
 });
 ```
@@ -50,7 +50,7 @@ After setting up the client side JavaScript for our action cable we now take a l
 If you've used the generator to setup your channels you already have a `app/channels/matestack_ui_core_channel.rb`. If not create it now. Inside it we define that every subscriber of this channel should stream from the "matestack-ui-core" channel, which means that anything transmitted by a publisher to this channel is direcetly routed to the channel subscribers.
 
 ```ruby
-class MatestackUiCoreChannel < ApplicationCable::Channel
+class MatestackUiVueJsChannel < ApplicationCable::Channel
   def subscribed
     stream_from "matestack_ui_core"
   end
@@ -166,12 +166,12 @@ Corresponding front end channel subscription.
 
 ```javascript
 // app/javascript/channels/public_channel.js
-import MatestackUiCore from "matestack-ui-core"
+import MatestackUiVueJs from "matestack-ui-vuejs"
 import consumer from "./consumer"
 
 consumer.subscriptions.create("PublicChannel", {
   received(data) {
-    MatestackUiCore.eventHub.$emit(data.event, data)
+    MatestackUiVueJs.eventHub.$emit(data.event, data)
   }
 });
 ```
@@ -192,12 +192,12 @@ Corresponding front end channel subscription.
 
 ```javascript
 // app/javascript/channels/private_channel.js
-import MatestackUiCore from "matestack-ui-core"
+import MatestackUiVueJs from "matestack-ui-vuejs"
 import consumer from "./consumer"
 
 consumer.subscriptions.create("PrivateChannel", {
   received(data) {
-    MatestackUiCore.eventHub.$emit(data.event, data)
+    MatestackUiVueJs.eventHub.$emit(data.event, data)
   }
 });
 ```

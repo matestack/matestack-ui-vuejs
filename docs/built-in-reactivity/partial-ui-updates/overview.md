@@ -68,12 +68,12 @@ Please make sure to setup ActionCable correctly. Esspecially following implement
 `app/javascript/channels/matestack_ui_core_channel.js`
 
 ```javascript
-import MatestackUiCore from 'matestack-ui-core';
+import MatestackUiVueJs from 'matestack-ui-vuejs';
 
-consumer.subscriptions.create("MatestackUiCoreChannel", {
+consumer.subscriptions.create("MatestackUiVueJsChannel", {
   //...
   received(data) {
-    MatestackUiCore.eventHub.$emit(data.event, data)
+    MatestackUiVueJs.eventHub.$emit(data.event, data)
   }
 });
 ```
@@ -118,7 +118,7 @@ class MyPage < Matestack::Ui::Page
     end
 
     Todo.all.each do |instance|
-      TodoComponent.(todo: instance)
+      TodoComponent.call(todo: instance)
     end
   end
 
@@ -162,7 +162,7 @@ class MyPage < Matestack::Ui::Page
 
     cable id: "my-cable-list", append_on: "new_todo_created" do
       Todo.all.each do |instance|
-        TodoComponent.(todo: instance)
+        TodoComponent.call(todo: instance)
       end
     end
   end
@@ -179,7 +179,7 @@ def create
   unless @todo.errors.any?
     ActionCable.server.broadcast("matestack_ui_core", {
       event: "new_todo_created",
-      data: TodoComponent.(todo: @todo)
+      data: TodoComponent.call(todo: @todo)
     })
     # respond to the form POST request (needs to be last)
     render json: { }, status: :created
@@ -198,7 +198,7 @@ Prepending works pretty much the same as appending element, just configure your 
 ```ruby
 cable id: "my-cable-list", prepend_on: "new_todo_created" do
   Todo.all.each do |instance|
-    TodoComponent.(todo: instance)
+    TodoComponent.call(todo: instance)
   end
 end
 ```
@@ -219,7 +219,7 @@ def update
   unless @todo.errors.any?
     ActionCable.server.broadcast("matestack_ui_core", {
       event: "todo_updated",
-      data: TodoComponent.(todo: @todo)
+      data: TodoComponent.call(todo: @todo)
     })
     # respond to the form PUT request (needs to be last)
     render json: { }, status: :ok
@@ -232,7 +232,7 @@ Again, the controller action renders a new version of the component and pushes t
 ```ruby
 cable id: "my-cable-list", update_on: "todo_updated" do
   Todo.all.each do |instance|
-    TodoComponent.(todo: instance)
+    TodoComponent.call(todo: instance)
   end
 end
 ```
@@ -248,7 +248,7 @@ Well, of course we want to be able to remove elements from that list without rer
 ```ruby
 cable id: "my-cable-list", delete_on: "todo_deleted" do
   Todo.all.each do |instance|
-    TodoComponent.(todo: instance)
+    TodoComponent.call(todo: instance)
   end
 end
 ```
@@ -308,7 +308,7 @@ def add_to_cart
 
   ActionCable.server.broadcast("matestack_ui_core", {
     event: "shopping_cart_updated",
-    data: ShoppingCart.()
+    data: ShoppingCart.call()
   })
   render json: { }, status: :ok
 end
@@ -318,7 +318,7 @@ and on your UI class \(probably your app class\):
 
 ```ruby
 cable id: "shopping-cart", replace_on: "shopping_cart_updated" do
-  ShoppingCart.()
+  ShoppingCart.call()
 end
 ```
 
@@ -330,8 +330,8 @@ All above shown examples demonstrated how to push a single component or ID to th
 ActionCable.server.broadcast("matestack_ui_core", {
   event: "todo_updated",
   data: [
-    ShoppingCart.(todo: @todo1),
-    ShoppingCart.(todo: @todo2)
+    ShoppingCart.call(todo: @todo1),
+    ShoppingCart.call(todo: @todo2)
   ]
 })
 ```
@@ -383,7 +383,7 @@ Using an isolated component does require you to create a custom component:
 class Home < Matestack::Ui::Page
   def response
     h1 'Welcome'
-    MyIsolatedComonent.(rerender_on: "some-event")
+    MyIsolatedComonent.call(rerender_on: "some-event")
   end
 end
 ```
@@ -412,7 +412,7 @@ And use it with the `:defer` or `:rerender_on` options which work the same on `a
 
 ```ruby
 def response
-  CurrentTime.(defer: 1000, rerender_on: 'update-time')
+  CurrentTime.call(defer: 1000, rerender_on: 'update-time')
 end
 ```
 
@@ -422,7 +422,7 @@ You can configure your isolated component to request its content directly after 
 
 ```ruby
 def response
-  CurrentTime.(defer: true)
+  CurrentTime.call(defer: true)
 end
 ```
 
@@ -430,7 +430,7 @@ The above call to your isolated component will be skipped on page load and the c
 
 ```ruby
 def response
-  CurrentTime.(defer: 500)
+  CurrentTime.call(defer: 500)
 end
 ```
 
@@ -442,7 +442,7 @@ Isolated component leverage the event hub and can react to emitted events. If th
 
 ```ruby
 def response
-  CurrentTime.(rerender_on: 'update-time')
+  CurrentTime.call(rerender_on: 'update-time')
   onclick emit: 'update-time' do
     button 'Update time'
   end

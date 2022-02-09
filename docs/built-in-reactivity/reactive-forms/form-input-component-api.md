@@ -145,8 +145,9 @@ end
 Generic code:
 
 ```javascript
-Vue.component('my-form-input', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formInputMixin],
+const myFormInput = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formInputMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -163,9 +164,13 @@ Vue.component('my-form-input', {
     // you can access the default initial value via this.componentConfig["init_value"]
     // if you need to, you can access your own component config data which added
     // within the prepare method of the corresponding Ruby class
-    // this.componentConfig["foo"] would be "bar" in this case
+    // this.props["foo"] would be "bar" in this case
   }
-});
+}
+export default myFormInput
+
+// and register in your application js file like:
+appInstance.component('my-form-input', myFormInput) // register at appInstance
 ```
 
 In order to support the `flatpickr` library, you would do something like this:
@@ -173,27 +178,31 @@ In order to support the `flatpickr` library, you would do something like this:
 `app/matestack/componenst/my_form_input.js`
 
 ```javascript
-Vue.component('my-form-input', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formInputMixin],
+const myFormInput = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formInputMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
   mounted: function(){
     // flatpickr needs to be required according to your JS setup
-    flatpickr(this.$el.querySelector('.flatpickr'), {
+    flatpickr(this.getElement().querySelector('.flatpickr'), {
       defaultDate: this.props["init_value"],
       enableTime: true
     });
   }
-});
+}
+export default myFormInput
+
+// and register in your application js file like:
+appInstance.component('my-form-input', myFormInput) // register at appInstance
 ```
 
-* Don't forget to require the custom component JavaScript according to your JS setup!
-* Finally, use it within a `form`:
+* Don't forget to require and register the custom component JavaScript according to your JS setup!
+* Finally, use it within a `matestack_form`:
 
 ```ruby
 matestack_form some_form_config do
-  Components::MyFormInput.(key: :foo, type: :text)
+  Components::MyFormInput.call(key: :foo, type: :text)
 end
 ```
-

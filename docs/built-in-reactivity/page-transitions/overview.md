@@ -7,14 +7,18 @@ The `transition` component is therefore one of the key components for you to use
 Using the `transition` component is pretty straight forward. Let's take the above mentioned shop app as an example and implement it and add a navigation with transitions to the home or products page. `transition`s are ofcourse usable in apps, pages and components.
 
 ```ruby
-class Shop::App < Matestack::Ui::App
+class Shop::Layout < Matestack::Ui::Layout
 
   def response
-    nav do
-      transition 'Matestack Shop', path: root_path
-      transition 'Products', path: products_path
+    matestack_vue_js_app do
+      nav do
+        transition 'Matestack Shop', path: root_path
+        transition 'Products', path: products_path
+      end
+      page_switch do
+        yield
+      end
     end
-    yield
   end
 
 end
@@ -44,20 +48,24 @@ An app defines a layout within its `response` method and uses the `yield_page` m
 `app/matestack/example_app/app.rb`
 
 ```ruby
-class ExampleApp::App < Matestack::Ui::App
+class ExampleApp::Layout < Matestack::Ui::Layout
 
   def response
     h1 "My Example App Layout"
-    nav do
-      transition path: app_specs_page1_path do
-        button "Page 1"
+    matestack_vue_js_app do
+      nav do
+        transition path: app_specs_page1_path do
+          button "Page 1"
+        end
+        transition path: app_specs_page2_path do
+          button "Page 2"
+        end
       end
-      transition path: app_specs_page2_path do
-        button "Page 2"
+      main do
+        page_switch do
+          yield
+        end
       end
-    end
-    main do
-      yield
     end
   end
 
@@ -71,12 +79,14 @@ The `transition` components will trigger async HTTP requests and exchange the pa
 `app/matestack/example_app/app.rb`
 
 ```ruby
-class ExampleApp::App < Matestack::Ui::App
+class ExampleApp::Layout < Matestack::Ui::Layout
 
   def response
     #...
     main do
-      yield 
+      page_switch do
+        yield
+      end
     end
     #...
   end
@@ -163,4 +173,3 @@ You can use the `loading` class and your loading state element to implement CSS 
 Styling a transition which is _active_ is simple, because it automatically gets the `active` class on the clientside when the current path equals it's target path. When a sub page of a parent `transition` component is currently active, the parent `transition` component gets a `active-child` class.
 
 {% page-ref page="transition-component-api.md" %}
-

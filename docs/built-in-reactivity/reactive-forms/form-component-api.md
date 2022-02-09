@@ -655,19 +655,23 @@ In this example, things get a bit more complex. We now want to transition to ano
 In order to additionally show a success/failure message, we define our matestack app layout with messages, using the _async core component_:
 
 ```ruby
-class ExampleApp::App < Matestack::Ui::App
+class ExampleApp::Layout < Matestack::Ui::Layout
 
   def response
     h1 'My Example App Layout'
-    main do
-      yield
-    end
-    toggle show_on: 'my_form_success', hide_after: 300 do
-      plain "{{event.data.message}}"
-    end
-    toggle show_on: 'my_form_failure', hide_after: 300 do
-      plain "{{event.data.message}}"
-      plain "{{event.data.errors}}"
+    matestack_vue_js_app do
+      main do
+        page_switch do
+          yield
+        end
+      end
+      toggle show_on: 'my_form_success', hide_after: 300 do
+        plain "{{event.data.message}}"
+      end
+      toggle show_on: 'my_form_failure', hide_after: 300 do
+        plain "{{event.data.message}}"
+        plain "{{event.data.errors}}"
+      end
     end
   end
 
@@ -740,7 +744,7 @@ Of course, to reach our two newly defined pages, we need to make them accessible
 class ExampleAppPagesController < ExampleController
 
   include Matestack::Ui::Core::Helper
-  matestack_app ExampleApp::App
+  matestack_layout ExampleApp::Layout
 
   def page1
     render ExampleApp::Pages::ExamplePage
@@ -1002,4 +1006,3 @@ Notice that we only _prepared_ the title, but missed out on the description.
 If we head to our example page on `localhost:3000/example`, we can already see the title input field filled in with _Title_. Trying to submit the form right away gives us the error message \(`can't be blank`\) because the description is, of course, still missing!
 
 After filling in the description with some input and hitting the submit button again, the instance of our `TestModel` gets successfully saved in the database - just the way we want it to work.
-

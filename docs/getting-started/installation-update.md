@@ -1,11 +1,15 @@
 # Installation & Update
 
+## Depenencies
+
+`matestack-ui-vuejs` requires `matestack-ui-core`. Make sure to follow the install guide from https://docs.matestack.io/matestack-ui-core/getting-started/installation-update and understand the concepts of `matestack-ui-core`.
+
 ## Installation
 
-Add 'matestack-ui-core' to your Gemfile
+Add 'matestack-ui-vuejs' to your Gemfile
 
 ```ruby
-gem 'matestack-ui-core'
+gem 'matestack-ui-vuejs'
 ```
 
 and run
@@ -14,15 +18,13 @@ and run
 $ bundle install
 ```
 
-### Matestack folder
+### Matestack Ui Core install steps (if not already happened)
 
 Create a folder called 'matestack' in your app directory. All your Matestack apps, pages and components will be defined there.
 
 ```text
 $ mkdir app/matestack
 ```
-
-### Controller setup
 
 Add the Matestack helper to your controllers. If you want to make the helpers available in all controllers, add it to your 'ApplicationController' this way:
 
@@ -35,55 +37,93 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Now, you are able to create UI components in pure Ruby and use them in your Rails views. Additionally you can substitute Rails views and layouts with Matestack pages and apps.
+### Rails 7 importmap based installation
 
-If you want to use Matestack's optional reactivity features in pure Ruby \(through dynamic Vue.js components such as `form` and `async` or dynamic page transitions\), please perform the next steps to set up the JavaScript parts via Webpacker.
+will be shipped in `matestack-ui-vuejs` `3.1`
 
-{% hint style="info" %}
-Matestack's JavaScript is only required if you want to use reactive features. It's totally valid to just use the "static" features of Matestack, namely implement UI components, pages and apps in pure Ruby.
-{% endhint %}
+### Webpacker > 5.x based JavaScript installation
 
-### Webpacker
-
-Add 'matestack-ui-core' to your `package.json` by running:
+Add 'matestack-ui-vuejs' to your `package.json` by running:
 
 ```text
-$ yarn add matestack-ui-core
+$ yarn add matestack-ui-vuejs
 ```
 
-This adds the npm package that provides the JavaScript corresponding to the matestack-ui-core ruby gem. Make sure that the npm package version matches the gem version. To find out what gem version you are using, you may use `bundle info matestack-ui-core`.
+This adds the npm package that provides the JavaScript corresponding to the matestack-ui-vuejs Ruby gem. Make sure that the npm package version matches the gem version. To find out what gem version you are using, you may use `bundle info matestack-ui-vuejs`.
 
-Next, import and setup 'matestack-ui-core' in your `app/javascript/packs/application.js`
+**Note**:
+
+- vue3 dropped IE 11 support
+- when using babel alongside webpacker, please adjust your package.json or .browserslistrc config in order to exclude IE 11 support:
+
+```json
+{
+  "name": "my-app",
+  "...": { },
+  "browserslist": [
+    "defaults",
+    "not IE 11" // <-- important!
+  ]
+}
+```
+
+Otherwise you may encounter issues around `regeneratorRuntime` (especially when using Vuex)
+
+Next, import and setup 'matestack-ui-vuejs' in your `app/javascript/packs/application.js`
 
 ```javascript
-import Vue from 'vue/dist/vue.esm'
-import Vuex from 'vuex'
+import { createApp } from 'vue'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
 
-import MatestackUiCore from 'matestack-ui-core'
-
-let matestackUiApp = undefined
+const appInstance = createApp({})
 
 document.addEventListener('DOMContentLoaded', () => {
-  matestackUiApp = new Vue({
-    el: "#matestack-ui",
-    store: MatestackUiCore.store
-  })
+  MatestackUiVueJs.mount(appInstance)
 })
 ```
 
-and compile the JavaScript code with webpack:
+and properly configure webpack:
+
+`config/webpack/environment.js`
+```js
+const { environment } = require('@rails/webpacker')
+const webpack = require('webpack');
+
+const customWebpackConfig = {
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.esm-bundler',
+    }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false
+    })
+  ]
+}
+
+environment.config.merge(customWebpackConfig)
+
+module.exports = environment
+```
+
+(don't forget to restart webpacker when changing this file!)
+
+
+and then finally compile the JavaScript code with webpack:
 
 ```text
 $ bin/webpack --watch
 ```
 
 {% hint style="warning" %}
-When you update the `matestack-ui-core` Ruby gem, make sure to update the npm package as well!
+When you update the `matestack-ui-vuejs` Ruby gem, make sure to update the npm package as well!
 {% endhint %}
 
 ### Usage with Turbolinks/Turbo
 
-If you want to use `matestack-ui-core` alongside with Turbolinks or Turbo, please add:
+If you want to use `matestack-ui-vuejs` alongside with Turbolinks or Turbo, please add:
 
 ```bash
 yarn add vue-turbolinks
@@ -92,22 +132,17 @@ yarn add vue-turbolinks
 And use following snippet instead:
 
 ```javascript
-import Vue from 'vue/dist/vue.esm'
-import Vuex from 'vuex'
-
-import MatestackUiCore from 'matestack-ui-core'
-
+import { createApp } from 'vue'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
 import TurbolinksAdapter from 'vue-turbolinks'; // import vue-turbolinks
-Vue.use(TurbolinksAdapter); // tell Vue to use it
 
-let matestackUiApp = undefined
+const appInstance = createApp({})
+
+appInstance.use(TurbolinksAdapter); // tell Vue to use it
 
 // change the trigger event
 document.addEventListener('turbolinks:load', () => {
-  matestackUiApp = new Vue({
-    el: "#matestack-ui",
-    store: MatestackUiCore.store
-  })
+  MatestackUiVueJs.mount(appInstance)
 })
 
 ```
@@ -149,7 +184,7 @@ Don't apply the "matestack-ui" id to the body tag.
 
 ### ActionCable Integration
 
-Some of Matestack's reactive core components may be used with or require ActionCable. If you want to use ActionCable, please read the action cable guide:
+Some of Matestack's reactive components may be used with or require ActionCable. If you want to use ActionCable, please read the action cable guide:
 
 {% page-ref page="../integrations/action-cable.md" %}
 
@@ -160,28 +195,27 @@ Some of Matestack's reactive core components may be used with or require ActionC
 Depending on the entry in your Gemfile, you might need to adjust the allowed version ranges in order to update the Gem. After checked and adjusted the version ranges, run:
 
 ```bash
-bundle update matestack-ui-core
+bundle update matestack-ui-vuejs
 ```
 
 and then check the installed version:
 
 ```bash
-bundle info matestack-ui-core
+bundle info matestack-ui-vuejs
 ```
 
 If you've installed the JavaScript dependecies via Yarn/Webpacker you need to update the JavaScript assets via yarn:
 
 ```bash
-yarn update matestack-ui-core
+yarn update matestack-ui-vuejs
 ```
 
 and finally check if the correct version is installed:
 
 ```bash
-yarn list --pattern "matestack-ui-core"
+yarn list --pattern "matestack-ui-vuejs"
 ```
 
 {% hint style="warning" %}
 The Ruby gem version and the npm package version should match!
 {% endhint %}
-

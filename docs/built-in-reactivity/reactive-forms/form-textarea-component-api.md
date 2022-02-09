@@ -65,8 +65,9 @@ end
 `app/matestack/componenst/my_form_textarea.js`
 
 ```javascript
-Vue.component('my-form-textarea', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formTextareaMixin],
+const myFormTextarea = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formTextareaMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -85,7 +86,11 @@ Vue.component('my-form-textarea', {
     // within the prepare method of the corresponding Ruby class
     // this.componentConfig["foo"] would be "bar" in this case
   }
-});
+}
+export default myFormTextarea
+
+// and register in your application js file like:
+appInstance.component('my-form-textarea', myFormTextarea) // register at appInstance
 ```
 
 * Don't forget to require the custom component JavaScript according to your JS setup!
@@ -93,7 +98,6 @@ Vue.component('my-form-textarea', {
 
 ```ruby
 matestack_form some_form_config do
-  Components::MyFormTextarea.(key: :foo)
+  Components::MyFormTextarea.call(key: :foo)
 end
 ```
-

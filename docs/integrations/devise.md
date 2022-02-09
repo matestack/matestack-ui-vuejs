@@ -48,8 +48,8 @@ class Profile::Pages::Sessions::SignIn < Matestack::Ui::Page
   def response
     h1 'Sign in'
     matestack_form form_config do
-      form_input label: 'Email', key: :email, type: :email 
-      form_input label: 'Password', key: :password, type: :password 
+      form_input label: 'Email', key: :email, type: :email
+      form_input label: 'Password', key: :password, type: :password
       button text: 'Sign in', type: :submit
     end
     toggle show_on: 'sign_in_failure' do
@@ -101,7 +101,7 @@ Override the `new` action in order to render our sign in page and set the correc
 ```ruby
 class Users::SessionsController < Devise::SessionsController
 
-  matestack_app Profile::App # specify the corresponding app to wrap pages in
+  matestack_layout Profile::Layout # specify the corresponding app to wrap pages in
 
   # override in order to render a page
   def new
@@ -156,7 +156,7 @@ end
 ```
 
 ```ruby
-def sign_out_config 
+def sign_out_config
   {
      method: :get,
      path: destroy_admin_session_path,
@@ -177,4 +177,3 @@ config.sign_out_via = :get
 ```
 
 That's all we have to do.
-

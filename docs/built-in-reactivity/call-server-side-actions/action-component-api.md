@@ -433,18 +433,22 @@ end
 Our example app layout, already including placeholders for success/failure notifications:
 
 ```ruby
-class Apps::ExampleApp < Matestack::Ui::App
+class ExampleApp::ExampleLayout < Matestack::Ui::Layout
 
   def response
     heading size: 1, text: 'My Example App Layout'
-    main do
-      yield
-    end
-    toggle show_on: 'my_action_success', hide_after: 300 do
-      plain '{{ event.data.message }}'
-    end
-    toggle show_on: 'my_action_failure', hide_after: 300 do
-      plain '{{ event.data.message }}'
+    matestack_vue_js_app do
+      main do
+        page_switch do
+          yield
+        end
+      end
+      toggle show_on: 'my_action_success', hide_after: 300 do
+        plain '{{ event.data.message }}'
+      end
+      toggle show_on: 'my_action_failure', hide_after: 300 do
+        plain '{{ event.data.message }}'
+      end
     end
   end
 
@@ -457,7 +461,7 @@ To make a transition from one page to the other work, we need to make both of th
 class ExampleAppPagesController < ExampleController
   include Matestack::Ui::Core::Helper
 
-  matestack_app ExampleApp
+  matestack_layout ExampleApp::ExampleLayout
 
   def page1
     render ExampleApp::Pages::ExamplePage
@@ -531,4 +535,3 @@ Now, we can visit `localhost:3000/action_test/page1` and see our first page, sho
 There, we can click on our button \(`Click me!`\) and get transfered to the second page. There, we see the `This is Page 2` text and, for 300ms, our `server says: good job!` success message. Neat!
 
 If we click the button \(`Click me!`\) on the second page, we get the failure message \(`server says: something went wrong!`\) and get sent back to page 2, just as we wanted to.
-

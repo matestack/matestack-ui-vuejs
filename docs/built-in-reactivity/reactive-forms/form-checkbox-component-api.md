@@ -143,8 +143,9 @@ Generic code:
 `app/matestack/components/my_form_checkbox.js`
 
 ```javascript
-Vue.component('my-form-checkbox', {
-  mixins: [MatestackUiCore.componentMixin, MatestackUiCore.formCheckboxMixin],
+const myFormCheckbox = {
+  mixins: [MatestackUiVueJs.componentMixin, MatestackUiVueJs.formCheckboxMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {};
   },
@@ -161,17 +162,21 @@ Vue.component('my-form-checkbox', {
     // you can access the default initial value via this.componentConfig["init_value"]
     // if you need to, you can access your own component config data which added
     // within the prepare method of the corresponding Ruby class
-    // this.componentConfig["foo"] would be "bar" in this case
+    // this.props["foo"] would be "bar" in this case
   }
-});
+}
+
+export default myFormCheckbox
+
+// and register in your application js file like:
+appInstance.component('my-form-checkbox', myFormCheckbox) // register at appInstance
 ```
 
-* Don't forget to require the custom component JavaScript according to your JS setup!
+* Don't forget to require and register the custom component JavaScript according to your JS setup!
 * Finally, use it within a `matestack_form`:
 
 ```ruby
 matestack_form some_form_config do
-  Components::MyFormCheckbox.(key: :foo, options: [1,2,3])
+  Components::MyFormCheckbox.call(key: :foo, options: [1,2,3])
 end
 ```
-

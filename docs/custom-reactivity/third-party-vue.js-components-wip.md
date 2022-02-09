@@ -16,7 +16,7 @@ class Components::MglMap < Matestack::Ui::VueJsComponent
   optional :custom_map_style_hash
 
   def response
-    plain tag.mglmap(":accessToken": "access_token", "mapStyle": "map_style")
+    plain tag.mglmap(":accessToken": "#{access_token}", "mapStyle": "#{map_style}")
   end
 
   private
@@ -36,14 +36,14 @@ end
 ## Vue.js Component
 
 ```javascript
-import Vue from "vue/dist/vue.esm";
-import MatestackUiCore from "matestack-ui-core";
+import MatestackUiVueJs from "matestack-ui-vuejs";
 
 import Mapbox from "mapbox-gl";
 import { MglMap } from "vue-mapbox";
 
-Vue.component('mgl-map-component', {
-  mixins: [MatestackUiCore.componentMixin],
+const mglMapComponent = {
+  mixins: [MatestackUiVueJs.componentMixin],
+  template: MatestackUiVueJs.componentHelpers.inlineTemplate,
   data() {
     return {
       mapbox: undefined
@@ -52,7 +52,11 @@ Vue.component('mgl-map-component', {
   created(){
     this.mapbox = Mapbox;
   }
-});
+}
+export default mglMapComponent
+
+// and register in your application js file like:
+appInstance.component('mgl-map-component', mglMapComponent) // register at appInstance
 ```
 
 ## Usage
@@ -62,10 +66,9 @@ class SomePage < Matestack::Ui::Page
 
   def response
     div class: "some-layout" do
-      Components::MglMap.(custom_map_style_hash: { ... })
+      Components::MglMap.call(custom_map_style_hash: { ... })
     end
   end
 
 end
 ```
-
