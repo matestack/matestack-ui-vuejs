@@ -70,7 +70,7 @@ toggle show_on: "my_show_event", hide_on: 'my_hide_event', init_show: true do
 end
 ```
 
-## Example
+## Examples
 
 ### Show on event
 
@@ -181,4 +181,3 @@ toggle show_on: "my_show_event", hide_on: 'my_hide_event', init_show: true do
   end
 end
 ```
-
