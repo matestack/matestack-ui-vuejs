@@ -41,13 +41,12 @@
 * [Third party Vue.js Components \[WIP\]](custom-reactivity/third-party-vue.js-components-wip.md)
 * [Matestack's Vue.js APIs \[WIP\]](custom-reactivity/matestacks-vue.js-apis-wip.md)
 * [Matestack's Vuex API \[WIP\]](custom-reactivity/matestacks-vuex-api-wip.md)
+* [Third Party JavaScript \[WIP\]](custom-reactivity/third-party-javascript.md)
 
 ## Integrations
 
 * [Action Cable](integrations/action-cable.md)
 * [Devise](integrations/devise.md)
-* [Authorization \[WIP\]](integrations/authorization.md)
-* [Third Party JavaScript \[WIP\]](integrations/third-party-javascript.md)
 
 ***
 
