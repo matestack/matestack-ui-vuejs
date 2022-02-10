@@ -31,11 +31,9 @@
   * [Cable Component API](built-in-reactivity/partial-ui-updates/cable-component-api.md)
   * [Isolated Component API](built-in-reactivity/partial-ui-updates/isolated-component-api.md)
 * [Page Transitions](built-in-reactivity/page-transitions/README.md)
-  * [Overview](built-in-reactivity/page-transitions/overview.md)
   * [Transition Component API](built-in-reactivity/page-transitions/transition-component-api.md)
 * [Reactive Collections](built-in-reactivity/reactive-collections/README.md)
-  * [Overview](built-in-reactivity/reactive-collections/overview.md)
-  * [Collection Component API \[WIP\]](built-in-reactivity/reactive-collections/collection-component-api.md)
+  * [Overview & API](built-in-reactivity/reactive-collections/overview.md)
 
 ## Custom Reactivity implemented in Vue.js <a href="#custom-reactivity" id="custom-reactivity"></a>
 
