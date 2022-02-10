@@ -14,7 +14,7 @@ gem 'matestack-ui-vuejs'
 
 and run
 
-```text
+```
 $ bundle install
 ```
 
@@ -22,7 +22,7 @@ $ bundle install
 
 Create a folder called 'matestack' in your app directory. All your Matestack apps, pages and components will be defined there.
 
-```text
+```
 $ mkdir app/matestack
 ```
 
@@ -45,7 +45,7 @@ will be shipped in `matestack-ui-vuejs` `3.1`
 
 Add 'matestack-ui-vuejs' to your `package.json` by running:
 
-```text
+```
 $ yarn add matestack-ui-vuejs
 ```
 
@@ -53,8 +53,8 @@ This adds the npm package that provides the JavaScript corresponding to the mate
 
 **Note**:
 
-- vue3 dropped IE 11 support
-- when using babel alongside webpacker, please adjust your package.json or .browserslistrc config in order to exclude IE 11 support:
+* vue3 dropped IE 11 support
+* when using babel alongside webpacker, please adjust your package.json or .browserslistrc config in order to exclude IE 11 support:
 
 ```json
 {
@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
 and properly configure webpack:
 
 `config/webpack/environment.js`
-```js
+
+```javascript
 const { environment } = require('@rails/webpacker')
 const webpack = require('webpack');
 
@@ -110,10 +111,9 @@ module.exports = environment
 
 (don't forget to restart webpacker when changing this file!)
 
-
 and then finally compile the JavaScript code with webpack:
 
-```text
+```
 $ bin/webpack --watch
 ```
 
@@ -144,12 +144,11 @@ appInstance.use(TurbolinksAdapter); // tell Vue to use it
 document.addEventListener('turbolinks:load', () => {
   MatestackUiVueJs.mount(appInstance)
 })
-
 ```
 
 ### Application layout adjustments
 
-You need to add the ID "matestack-ui" to some part of your application layout \(or any layout you use\). That's required for Matestack's Vue.js to work properly!
+You need to add the ID "matestack-ui" to some part of your application layout (or any layout you use). That's required for Matestack's Vue.js to work properly!
 
 For Example, your `app/views/layouts/application.html.erb` should look like this:
 
@@ -186,7 +185,9 @@ Don't apply the "matestack-ui" id to the body tag.
 
 Some of Matestack's reactive components may be used with or require ActionCable. If you want to use ActionCable, please read the action cable guide:
 
-{% page-ref page="../integrations/action-cable.md" %}
+{% content-ref url="../integrations/action-cable.md" %}
+[action-cable.md](../integrations/action-cable.md)
+{% endcontent-ref %}
 
 ## Update
 
