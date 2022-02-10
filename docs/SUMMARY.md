@@ -40,9 +40,9 @@
 ## Custom Reactivity implemented in Vue.js <a href="#custom-reactivity" id="custom-reactivity"></a>
 
 * [Custom Vue.js Components](custom-reactivity/custom-vue-js-components.md)
-* [Third party Vue.js Components \[WIP\]](custom-reactivity/third-party-vue.js-components.md)
-* [Matestack's Vue.js APIs \[WIP\]](custom-reactivity/matestacks-vue-js-apis.md)
-* [Matestack's Vuex API \[WIP\]](custom-reactivity/matestacks-vuex-api.md)
+* [Third party Vue.js Components \[WIP\]](custom-reactivity/third-party-vue.js-components-wip.md)
+* [Matestack's Vue.js APIs \[WIP\]](custom-reactivity/matestacks-vue.js-apis-wip.md)
+* [Matestack's Vuex API \[WIP\]](custom-reactivity/matestacks-vuex-api-wip.md)
 
 ## Integrations
 

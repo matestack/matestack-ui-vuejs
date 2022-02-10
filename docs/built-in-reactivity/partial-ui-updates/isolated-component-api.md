@@ -1,5 +1,77 @@
 # Isolated Component API
 
+Matestack's concept of isolated components has a lot in common with `async` components. Isolated components can be deferred or asynchronously rerendered like `async` components. In difference to `async` components, isolated components are resolved completely independently from the rest of the UI. If an isolated component gets rerendered or loaded, Matestack will directly render this component without touching the surrounding UI implementation. `async` - in contrast - is executing the surrounding UI implementation in order to render the relevant UI part. On complex UIs this makes a difference performance wise!
+
+### Differences to simple components
+
+Your isolated components can by design not
+
+* yield components passed in by using a block
+* yield slots passed in by using slots
+* simply get options injected by surrounding context
+
+They are meant to be `isolated` and resolve all data independently! That's why they can be rendered completely separate from the rest of the UI.
+
+Furthermore isolated components have to be authorized independently. See below.
+
+### Differences to the `async` component
+
+The [`async` component](https://github.com/matestack/matestack-ui-core/tree/829eb2f5a7483ef4b78450a5429589ec8f8123e8/docs/reactive\_components/600-isolated/docs/api/100-components/core/async.md) offers pretty similar functionalities enabling you to define asynchronous rendering. The important difference is that rerendering an `async` component requires resolving the whole page on the serverside, which can be performance critical on complex pages. An isolated component bypasses the page and can therefore offer high performance rerendering.
+
+Using the `async` component does NOT require you to create a custom component:
+
+```ruby
+class Home < Matestack::Ui::Page
+  def response
+    h1 'Welcome'
+    async id: "some-unique-id", rerender_on: "some-event" do
+      div id: 'my-async-wrapper' do
+        plain I18n.l(DateTime.now)
+      end
+    end
+  end
+end
+```
+
+Using an isolated component does require you to create a custom component:
+
+```ruby
+class Home < Matestack::Ui::Page
+  def response
+    h1 'Welcome'
+    MyIsolatedComponent.call(rerender_on: "some-event")
+  end
+end
+```
+
+Isolated components should be used on complex UIs where `async` rerendering would be performance critical or you simply wish to create cleaner and more decoupled code.
+
+To create an isolated component you need to create a component which inherits from `Matestack::Ui::IsolatedComponent`. Implementing your component is straight forward. As always you implement a `response` method which defines what gets rendered.
+
+```ruby
+class MyIsolatedComponent < IsolatedComponent
+
+  def response
+    div class: 'time' do
+      paragraph text: DateTime.now
+    end
+  end
+
+  def authorized?
+    true
+  end
+
+end
+```
+
+And use it with the `:defer` or `:rerender_on` options which work the same on `async` components.
+
+```ruby
+def response
+  MyIsolatedComponent.call(defer: 1000, rerender_on: 'update-time')
+end
+```
+
 ## Authorize
 
 When asynchronously rendering isolated components, these HTTP calls are actually processed by the controller action responsible for the corresponding page rendering. One might think, that the optional authorization and authentication rules of that controller action should therefore be enough for securing isolated component rendering.
@@ -9,6 +81,14 @@ But that's not true. It would be possible to hijack public controller actions wi
 That's why we enforce the usage of the `authorized?` method to make sure, all isolated components take care of their authorization themselves.
 
 If `authorized?` returns `true`, the component will be rendered. If it returns `false`, the component will not be rendered.
+
+This might sound complicated, but it is not. For example using devise you can access the controller helper `current_user` inside your isolated component, making authorization implementations as easy as:
+
+```ruby
+def authorized?
+  current_user.present?
+end
+```
 
 A public isolated component therefore needs an `authorized?` method simply returning `true`.
 
@@ -22,7 +102,7 @@ All options below are meant to be injected to your isolated component like:
 class Home < Matestack::Ui::Page
   def response
     heading size: 1, text: 'Welcome'
-    my_isolated defer: 1000, #...
+    MyIsolatedComonent.call(defer: 1000, #...)
   end
 end
 ```
@@ -33,7 +113,7 @@ The option defer lets you delay the initial component rendering. If you set defe
 
 If `defer` is set to `true` the asynchronous requests gets triggered as soon as the initial page is loaded.
 
-If `defer` is set to a positive integer \(including zero\) the asynchronous request is delayed by the given amount in ms.
+If `defer` is set to a positive integer (including zero) the asynchronous request is delayed by the given amount in ms.
 
 ### rerender\_on
 
@@ -82,10 +162,10 @@ During async rendering a `loading` class will automatically be applied, which ca
 Additionally you can define a `loading_state_element` within the component class like:
 
 ```ruby
-class MyIsolated < Matestack::Ui::IsolatedComponent
+class MyIsolatedComponent < Matestack::Ui::IsolatedComponent
   def response
     div id: 'my-isolated-wrapper' do
-      plain I18n.l(DateTime.now)
+      plain "hello"
     end
   end
 
@@ -111,8 +191,10 @@ which will then render to:
     </div>
   </div>
   <div class="matestack-isolated-component-wrapper">
-    <div class="matestack-isolated-component-root" >
-      hello!
+    <div class="matestack-isolated-component-root">
+      <div id="my-isolated-wrapper">
+        hello!
+      </div>
     </div>
   </div>
 </div>
@@ -142,7 +224,7 @@ and during async rendering request:
 Create a custom component inheriting from the isolate component
 
 ```ruby
-class MyIsolated < Matestack::Ui::IsolatedComponent
+class MyIsolatedComponent < Matestack::Ui::IsolatedComponent
 
   def response
     div id: 'my-isolated-wrapper' do
@@ -166,7 +248,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.call()
+    MyIsolatedComponent.call()
   end
 
 end
@@ -181,14 +263,14 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.call(defer: true)
-    MyIsolated.call(defer: 2000)
+    MyIsolatedComponent.call(defer: true)
+    MyIsolatedComponent.call(defer: 2000)
   end
 
 end
 ```
 
-By specifying the `defer` option both calls to the custom isolated components will not get rendered on initial page load. Instead the component with `defer: true` will get rendered as soon as the initial page load is done and the component with `defer: 2000` will be rendered 2000ms after the initial page load is done. Which means that the second my\_isolated component will show the datetime with 2s more on the clock then the first one.
+By specifying the `defer` option both calls to the custom isolated components will not get rendered on initial page load. Instead the component with `defer: true` will get rendered as soon as the initial page load is done and the component with `defer: 2000` will be rendered 2000ms after the initial page load is done. Which means that the second component will show the datetime with 2s more on the clock then the first one.
 
 ### Rerender On Isolate Component
 
@@ -197,7 +279,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.call(rerender_on: 'update_time')
+    MyIsolatedComponent.call(rerender_on: 'update_time')
     onclick emit: 'update_time' do
       button 'Update Time!'
     end
@@ -215,7 +297,7 @@ class Home < Matestack::Ui::Page
 
   def response
     h1 'Welcome'
-    MyIsolated.call(rerender_on: 'update_time', rerender_delay: 300)
+    MyIsolatedComponent.call(rerender_on: 'update_time', rerender_delay: 300)
     onclick emit: 'update_time' do
       button 'Update Time!'
     end
@@ -233,7 +315,7 @@ class Home < Matestack::Ui::Page
 
   def response
    h1 'Welcome'
-    MyIsolated.call(init_on: 'init_time')
+    MyIsolatedComponent.call(init_on: 'init_time')
     onclick emit: 'init_time' do
       button 'Init Time!'
     end
@@ -292,4 +374,3 @@ end
 ```
 
 This page will render a match\_isolated\_score component for each match. If one of the isolated components gets rerendered we need the id in order to fetch the correct match. Because the server only resolves the isolated component instead of the whole UI it does not know which match exactly is requested unless the client requests a rerender with the match id. This is why `public_options` options are passed to the client side Vue.js component. So if match two should be rerendered the client requests the match\_isolated\_score component with `public_options: { id: 2 }`. With this information our isolated component can fetch the match and rerender itself.
-

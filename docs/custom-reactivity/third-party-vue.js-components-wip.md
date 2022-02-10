@@ -1,4 +1,4 @@
-# Third party Vue.js components \[WIP\]
+# Third party Vue.js Components \[WIP]
 
 Using a third party Vue.js component based on an example integrating [https://soal.github.io/vue-mapbox/](https://soal.github.io/vue-mapbox/)
 

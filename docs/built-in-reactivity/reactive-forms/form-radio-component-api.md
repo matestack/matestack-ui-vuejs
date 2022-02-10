@@ -8,25 +8,6 @@ matestack_form my_form_config do
 end
 ```
 
-All child components `form_*` \(including this component\) have to be placed within the scope of the parent `form` component, without any other Vue.js driven component like `toggle`, `async` creating a new scope between the child component and the parent form component! Non-Vue.js component can be placed between `form` and `form_*` without issues!
-
-```ruby
-# that's working:
-matestack_form some_form_config do
-  form_* key: :foo
-  toggle show_on: "some-event" do
-    plain "hello!"
-  end
-end
-
-# that's not working:
-matestack_form some_form_config do
-  toggle show_on: "some-event" do
-    form_* key: :foo
-  end
-end
-```
-
 ## Parameters
 
 ### key - required
