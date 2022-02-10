@@ -7,7 +7,7 @@
 
 * [Installation & Update](getting-started/installation-update.md)
 
-## Built-in Reactivity composed in pure Ruby <a id="built-in-reactivity"></a>
+## Built-in Reactivity composed in pure Ruby <a href="#built-in-reactivity" id="built-in-reactivity"></a>
 
 * [Overview](built-in-reactivity/overview.md)
 * [Emit Client Side Events](built-in-reactivity/emit-client-side-events/README.md)
@@ -38,7 +38,7 @@
   * [Overview](built-in-reactivity/reactive-collections/overview.md)
   * [Collection Component API \[WIP\]](built-in-reactivity/reactive-collections/collection-component-api.md)
 
-## Custom Reactivity implemented in Vue.js <a id="custom-reactivity"></a>
+## Custom Reactivity implemented in Vue.js <a href="#custom-reactivity" id="custom-reactivity"></a>
 
 * [Custom Vue.js Components](custom-reactivity/custom-vue-js-components.md)
 * [Third party Vue.js components \[WIP\]](custom-reactivity/third-party-vue.js-components-wip.md)
@@ -51,3 +51,7 @@
 * [Devise](integrations/devise.md)
 * [Authorization \[WIP\]](integrations/authorization.md)
 * [Third Party JavaScript \[WIP\]](integrations/third-party-javascript.md)
+
+***
+
+* [Contribute](contribute.md)
