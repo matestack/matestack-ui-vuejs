@@ -8,9 +8,9 @@ module Matestack
 
           def response
             div class: 'matestack-page-container', 'v-bind:class': '{ "loading": vc.loading === true }'  do
-              if Matestack::Ui::Core::Context.app.respond_to? :loading_state_element
+              if Matestack::Ui::Core::Context.layout.respond_to? :loading_state_element
                 div class: 'loading-state-element-wrapper', 'v-bind:class': '{ "loading": vc.loading === true }'  do
-                  Matestack::Ui::Core::Context.app.loading_state_element
+                  Matestack::Ui::Core::Context.layout.loading_state_element
                 end
               end
               div class: 'matestack-page-wrapper', 'v-bind:class': '{ "loading": vc.loading === true }' do
