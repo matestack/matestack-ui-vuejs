@@ -9,7 +9,7 @@ RUN apk update --no-cache && \
 WORKDIR /app
 
 COPY ./lib/ /app/lib/
-COPY matestack-ui-vue_js.gemspec /app/
+COPY matestack-ui-vuejs.gemspec /app/
 COPY ./ci/Gemfile.6.0 /app/Gemfile
 RUN bundle install
 
