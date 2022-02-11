@@ -137,7 +137,7 @@ describe "Form Component", type: :feature, js: true do
       class ExamplePage < Matestack::Ui::Page
 
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             custom_form_select_test id: "my-array-test-dropdown", key: :array_input, options: ["Array Option 1","Array Option 2"]
             custom_form_select_test id: "my-hash-test-dropdown", key: :hash_input, options: { "Hash Option 1": 1, "Hash Option 2": 2 }
             button "Submit me!"
@@ -166,7 +166,7 @@ describe "Form Component", type: :feature, js: true do
     it "can be initialized with value" do
       class ExamplePage < Matestack::Ui::Page
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             custom_form_select_test id: "my-array-test-dropdown", key: :array_input, options: ["Array Option 1","Array Option 2"], init: "Array Option 1"
             custom_form_select_test id: "my-hash-test-dropdown", key: :hash_input, options: { "Hash Option 1": 1, "Hash Option 2": 2 }, init: 1
             button "Submit me!"
@@ -206,7 +206,7 @@ describe "Form Component", type: :feature, js: true do
         end
 
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             form_input id: "description", key: :description, type: :text
             # TODO: Provide better Enum Options API
             custom_form_select_test id: "status", key: :status, options: TestModel.statuses, init: TestModel.statuses[@test_model.status]
@@ -250,7 +250,7 @@ describe "Form Component", type: :feature, js: true do
         end
 
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             form_input id: "description", key: :description, type: :text
             # TODO: Provide better Enum Options API
             custom_form_select_test id: "status", key: :status, options: TestModel.statuses, init: TestModel.statuses[@test_model.status]
@@ -294,7 +294,7 @@ describe "Form Component", type: :feature, js: true do
         end
 
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             # TODO: Provide better Enum Options API
             custom_form_select_test id: "status", key: :status, options: TestModel.statuses, init: TestModel.statuses[@test_model.status]
             button "Submit me!"
@@ -320,7 +320,7 @@ describe "Form Component", type: :feature, js: true do
     it "can have a class" do
       class ExamplePage < Matestack::Ui::Page
         def response
-          matestack_form form_config, :include do
+          matestack_form form_config do
             custom_form_select_test id: "my-array-test-dropdown", key: :array_input, options: ["Array Option 1","Array Option 2"], class: "form-control"
             custom_form_select_test id: "my-hash-test-dropdown", key: :hash_input, options: { "Hash Option 1": 1, "Hash Option 2": 2 }, class: "form-control"
             button "Submit me!"
