@@ -5,7 +5,7 @@ require "matestack/ui/vue_js/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "matestack-ui-vue_js"
+  s.name        = "matestack-ui-vuejs"
   s.version     = Matestack::Ui::VueJs::VERSION
   s.authors     = ["Jonas Jabari"]
   s.email       = ["jonas@matestack.io"]
