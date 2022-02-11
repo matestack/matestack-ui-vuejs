@@ -15,6 +15,16 @@ If you've used reactivity features of `matestack-ui-core` 2.x you now have to in
 gem 'matestack-ui-core', '~> 3.0'
 gem 'matestack-ui-vuejs', '~> 3.0'
 ```
+## Remove `matestack-ui-core` JavaScript package
+
+- `matestack-ui-core` does not ship a JavaScript package anymore
+- please remove the package from your application and switch to `matestack-ui-vuejs` for the VueJs driven reactivity if required
+
+```
+yarn remove matestack-ui-core
+```
+
+- and add `matestack-ui-vuejs`:
 
 `package.json`
 ```json
