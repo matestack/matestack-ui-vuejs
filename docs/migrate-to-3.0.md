@@ -15,19 +15,20 @@ If you've used reactivity features of `matestack-ui-core` 2.x you now have to in
 `Gemfile`
 
 ```ruby
-gem 'matestack-ui-core', '~> 3.0'
-gem 'matestack-ui-vuejs', '~> 3.0'
+gem 'matestack-ui-core', '~> 3.0.0.rc-1'
+gem 'matestack-ui-vuejs', '~> 3.0.0.rc-1'
 ```
+
 ## Remove `matestack-ui-core` JavaScript package
 
-- `matestack-ui-core` does not ship a JavaScript package anymore
-- please remove the package from your application and switch to `matestack-ui-vuejs` for the VueJs driven reactivity if required
+* `matestack-ui-core` does not ship a JavaScript package anymore
+* please remove the package from your application and switch to `matestack-ui-vuejs` for the VueJs driven reactivity if required
 
 ```
 yarn remove matestack-ui-core
 ```
 
-- and add `matestack-ui-vuejs`:
+* and add `matestack-ui-vuejs`:
 
 `package.json`
 
@@ -35,7 +36,7 @@ yarn remove matestack-ui-core
 {
   "name": "my-app",
   "dependencies": {
-    "matestack-ui-vuejs": "^3.0.0", // <-- new package name
+    "matestack-ui-vuejs": "^3.0.0-rc1", // <-- new package name
     "..."
   }
 }
