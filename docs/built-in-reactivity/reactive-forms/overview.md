@@ -176,10 +176,10 @@ This will render static texts "Yeah! It worked!" or "Damn! Somenthing went wrong
 ```ruby
 # ...
 toggle show_on: "submitted", hide_after: 5000 do
-  span class: "some-success-styling", text: "Yeah! {{ event.data.message }}"
+  span class: "some-success-styling", text: "Yeah! {{ vc.event.data.message }}"
 end
 toggle show_on: "failed", hide_after: 5000 do
-  span class: "some-error-styling", text: "Damn! {{ event.data.message }}"
+  span class: "some-error-styling", text: "Damn! {{ vc.event.data.message }}"
 end
 # ...
 ```

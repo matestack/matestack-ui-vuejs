@@ -442,7 +442,7 @@ def response
   end
   # somewhere else or within the form:
   toggle show_on: :form_failed, hide_on: :form_succeeded do
-    plain "{{event.data.message}}"
+    plain "{{vc.event.data.message}}"
   end
 end
 
@@ -459,7 +459,7 @@ def my_form_config
 end
 ```
 
-The `matestack_form` component emits the event together with all errors and the message coming from the server's response. The `toggle` component can then access all this data via `event.data.xyz`
+The `matestack_form` component emits the event together with all errors and the message coming from the server's response. The `toggle` component can then access all this data via `vc.event.data.xyz`
 
 ## Loading state
 
@@ -604,8 +604,8 @@ class ExamplePage < Matestack::Ui::Page
       button 'Submit me!'
     end
     toggle show_on: 'my_form_failure' do
-      plain "{{event.data.message}}"
-      plain "{{event.data.errors}}"
+      plain "{{vc.event.data.message}}"
+      plain "{{vc.event.data.errors}}"
     end
   end
 
@@ -643,11 +643,11 @@ class ExampleApp::Layout < Matestack::Ui::Layout
         end
       end
       toggle show_on: 'my_form_success', hide_after: 300 do
-        plain "{{event.data.message}}"
+        plain "{{vc.event.data.message}}"
       end
       toggle show_on: 'my_form_failure', hide_after: 300 do
-        plain "{{event.data.message}}"
-        plain "{{event.data.errors}}"
+        plain "{{vc.event.data.message}}"
+        plain "{{vc.event.data.errors}}"
       end
     end
   end

@@ -380,7 +380,7 @@ class ExamplePage < Matestack::Ui::Page
     end
     # different async behavior
     toggle show_on: 'my_action_success', hide_after: 300 do
-      plain '{{ event.data.message }}'
+      plain '{{ vc.event.data.message }}'
     end
   end
 
@@ -413,11 +413,11 @@ class ExamplePage < Matestack::Ui::Page
     end
     # success message, initially hidden and removed after 300ms
     toggle show_on: 'my_action_success', hide_after: 300 do
-      plain '{{ event.data.message }}'
+      plain '{{ vc.event.data.message }}'
     end
     # failure message, initially hidden and removed after 300ms
     toggle show_on: 'my_action_failure', hide_after: 300 do
-      plain '{{ event.data.message }}'
+      plain '{{ vc.event.data.message }}'
     end
   end
 
@@ -467,10 +467,10 @@ class ExampleApp::ExampleLayout < Matestack::Ui::Layout
         end
       end
       toggle show_on: 'my_action_success', hide_after: 300 do
-        plain '{{ event.data.message }}'
+        plain '{{ vc.event.data.message }}'
       end
       toggle show_on: 'my_action_failure', hide_after: 300 do
-        plain '{{ event.data.message }}'
+        plain '{{ vc.event.data.message }}'
       end
     end
   end

@@ -142,7 +142,7 @@ class ExamplePage < Matestack::Ui::Page
   def response
     toggle show_on: 'my_event' do
       div id: 'my-div' do
-        plain "{{event.data.message}}"
+        plain "{{vc.event.data.message}}"
       end
     end
   end
