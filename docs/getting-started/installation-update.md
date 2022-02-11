@@ -9,7 +9,7 @@
 Add 'matestack-ui-vuejs' to your Gemfile
 
 ```ruby
-gem 'matestack-ui-vuejs'
+gem 'matestack-ui-vuejs', "~> 3.0.0.rc1"
 ```
 
 and run
@@ -46,7 +46,7 @@ will be shipped in `matestack-ui-vuejs` `3.1`
 Add 'matestack-ui-vuejs' to your `package.json` by running:
 
 ```
-$ yarn add matestack-ui-vuejs
+$ yarn add matestack-ui-vuejs@3.0.0-rc1
 ```
 
 This adds the npm package that provides the JavaScript corresponding to the matestack-ui-vuejs Ruby gem. Make sure that the npm package version matches the gem version. To find out what gem version you are using, you may use `bundle info matestack-ui-vuejs`.
