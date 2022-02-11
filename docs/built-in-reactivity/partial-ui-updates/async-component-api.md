@@ -8,7 +8,7 @@ Please be aware that, if not configured otherwise, the `async` core component do
 
 The `async` core component accepts the following parameters:
 
-### ID  - required
+### ID - required
 
 The `async` component needs an ID in order to resolve the correct content on an async HTTP request
 
@@ -32,13 +32,13 @@ end
 
 **Note:** The `rerender_on` option lets you rerender parts of your UI asynchronously. But please consider that, if not configured differently, it
 
-a\) is **not** _lazily loaded_ and
+a) is **not** _lazily loaded_ and
 
-b\) and does get displayed on initial pageload
+b) and does get displayed on initial pageload
 
 by default.
 
-Lazy \(or defered\) loading can be configured like shown [here](async-component-api.md#defer).
+Lazy (or defered) loading can be configured like shown [here](async-component-api.md#defer).
 
 You can pass in multiple, comma-separated events on which the component should rerender.
 
@@ -127,43 +127,43 @@ During async rendering a `loading` class will automatically be applied, which ca
 
 ## Examples
 
-See some common use cases below:
+### Deferring content
 
-### Rerender on event
-
-On our example page, we wrap a simple timestamp in an async component and tell it to rerender when the event `my_event` gets triggered.
+You can either configure an `async` component to request its content directly after the page load or to delay the request for a given amount of time after the page load. `:defer` expects either a boolean or a integer representing the delay time in milliseconds. If `:defer` is set to `false` the `async` component will be rendered on page load and not deferred. If set to `true` it will request its content directly after the page load.
 
 ```ruby
-class ExamplePage < Matestack::Ui::Page
-
-  def response
-    async rerender_on: 'my_event', id: "some-unique-id" do
-      div id: 'my-div' do
-        plain "#{DateTime.now.strftime('%Q')}"
-      end
-    end
+def response
+  async id: 'deferred-async', defer: true do
+    plain 'Some content rendered after page is loaded.'
   end
-
 end
 ```
 
-Not surprisingly, the timestamp gets updated after our event was fired!
-
-### Deferred loading
-
-On our example page, we wrap our `async` event around a placeholder for the event message.
+The above `async` component will be rendered asynchronously after page load.
 
 ```ruby
-class ExamplePage < Matestack::Ui::Page
-
-  def response 
-    async defer: true, id: "some-unique-id" do 
-      div id: 'my-div' do 
-        plain 'I will be requested within a separate GET request right after initial page load is done' 
-      end 
-    end 
+def response
+  async id: 'delayed-deferred-async', defer: 500 do
+    plain 'Some delayed deferred content'
   end
-
 end
 ```
 
+Specifying `defer: 500` will delay the asynchronous request after page load of the `async` component for 300ms and render the content afterwards.
+
+### Rerendering content
+
+The `async` leverages the event hub and can react to emitted events. If it receives one or more of the with `:rerender_on` specified events it will asynchronously request a rerender of its content. The response will only include the rerendered html of the `async` component which then replaces the current content of the `async`. If you specify multiple events in `:rerender_on` they need to be seperated by a comma.
+
+```ruby
+def response
+  async id: 'rerendering-async', rerender_on: 'update-time' do
+    paragraph DateTime.now
+  end
+  onclick emit: 'update-time' do
+    button text: 'Update time'
+  end
+end
+```
+
+The above snippet renders a paragraph with the current time and a button "Update time" on page load. If the button is clicked a _update-time_ event is emitted. The `async` component wrapping the paragraph receives the event and reacts to it by requesting its rerendered content from the server and replacing its content with the received html. In this case it will rerender after button click and show the updated time.

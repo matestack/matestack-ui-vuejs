@@ -1,6 +1,29 @@
 # Action Component API
 
-The action component allows us to trigger async HTTP requests without Javascript!
+The `action` component can be used to trigger asynchronous requests from - for example a button click - or any other html markup. The `action` components let's us wrap content in an `a` tag which is then clickable and triggers a background request with the configured request method to the configured path and with optionally given params and let's us react to the server response. It can distinguish between a successful and failed response and emit events, transition somewhere, completely redirect and more. You only need to configure it according to your needs.
+
+```ruby
+def response
+  action action_config do
+    button 'Delete'
+  end
+end
+
+def action_config
+  {
+    path: product_path(product),
+    method: :delete,
+    sucess: {
+      transition: {
+        follow_response: true
+      }
+    },
+    failure: {
+      emit: 'deletion-failed'
+    }
+  }
+end
+```
 
 ## Parameters
 
@@ -117,9 +140,9 @@ end
 
 #### Perform redirect
 
-We can also perform a redirect \(full page load\) that only gets triggered on success and also accepts further params:
+We can also perform a redirect (full page load) that only gets triggered on success and also accepts further params:
 
-Please be aware, that emiting a event doen't have an effect when performing a redirect instead of a transition, as the whole page \(including the surrounding app\) gets reloaded!
+Please be aware, that emiting a event doen't have an effect when performing a redirect instead of a transition, as the whole page (including the surrounding app) gets reloaded!
 
 ```ruby
 success: {
@@ -341,7 +364,7 @@ class ExamplePage < Matestack::Ui::Page
 end
 ```
 
-Now, if we click the button and everything goes well \(which should be the case in this very simple example\), we can see the timestamp gets updated - nice!
+Now, if we click the button and everything goes well (which should be the case in this very simple example), we can see the timestamp gets updated - nice!
 
 #### Async request with success event emit used for notification
 
@@ -378,7 +401,7 @@ This time, after clicking our action component we should see the `good job!` mes
 
 #### Async request with failure event emit used for notification
 
-In the examples before, we always assumed \(and made sure\) that things went well. Now, it's the first time to use the `failure_action_test_path` to see how we can notify the user if things go wrong!
+In the examples before, we always assumed (and made sure) that things went well. Now, it's the first time to use the `failure_action_test_path` to see how we can notify the user if things go wrong!
 
 ```ruby
 class ExamplePage < Matestack::Ui::Page
@@ -532,6 +555,6 @@ end
 
 Now, we can visit `localhost:3000/action_test/page1` and see our first page, shown by the `This is Page 1` text.
 
-There, we can click on our button \(`Click me!`\) and get transfered to the second page. There, we see the `This is Page 2` text and, for 300ms, our `server says: good job!` success message. Neat!
+There, we can click on our button (`Click me!`) and get transfered to the second page. There, we see the `This is Page 2` text and, for 300ms, our `server says: good job!` success message. Neat!
 
-If we click the button \(`Click me!`\) on the second page, we get the failure message \(`server says: something went wrong!`\) and get sent back to page 2, just as we wanted to.
+If we click the button (`Click me!`) on the second page, we get the failure message (`server says: something went wrong!`) and get sent back to page 2, just as we wanted to.

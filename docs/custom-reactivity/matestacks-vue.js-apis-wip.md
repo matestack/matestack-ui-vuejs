@@ -1,4 +1,4 @@
-# Matestack's Vue.js APIs \[WIP\]
+# Matestack's Vue.js APIs \[WIP]
 
 ## Event Hub
 
@@ -64,8 +64,8 @@ As we're pretty much implementing pure Vue.js components, you can refer to the [
 
 #### component $refs
 
-- use `this.getRefs()` instead of `this.$refs`
+* use `this.getRefs()` instead of `this.$refs`
 
 #### component $el
 
-- use `this.getElement()` instead of `this.$el`
+* use `this.getElement()` instead of `this.$el`

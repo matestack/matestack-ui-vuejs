@@ -1,2 +1,2 @@
-# Matestack's Vuex API \[WIP\]
+# Matestack's Vuex API \[WIP]
 

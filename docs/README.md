@@ -18,7 +18,7 @@ Version 3.0.0 was released on the xth of February 2022. Click here for more [det
 
 ****
 
-**If you want to see the docs for Version 2.1, click** [**here**](https://docs.matestack.io/matestack-ui-core/v/2.1/)**:**
+**If you want to see the docs for Version 2.1, click** [**here**](https://docs.matestack.io/matestack-ui-core/v/2.1/)
 {% endhint %}
 
 ## About

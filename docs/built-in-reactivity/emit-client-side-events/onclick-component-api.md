@@ -1,6 +1,8 @@
 # Onclick Component API
 
-The `onclick` component renders an `a` tag that emits a client side event when the user clicks on it. The onclick component takes a block in order to define its appearance.
+The `onclick` component renders an `a` tag that emits a client side event when the user clicks on it. Other component may react to this event.
+
+The onclick component takes a block in order to define its appearance.
 
 ## Parameters
 
@@ -10,7 +12,7 @@ Takes a string or symbol. An event with this name will be emitted using the Mate
 
 **You currently cannot pass in an event payload.**
 
-### **&block - required**
+### **\&block - required**
 
 The passed in block defines the appearance of the onclick component. The while UI structure defined in this block will be wrapped with an `a` tag
 
@@ -26,10 +28,9 @@ class ExamplePage < Matestack::Ui::Page
       button "rerender something"
     end
     async rerender_on: "abc", id: "some-unique-id" do
-      plain "Render this text when the 'abc' event is emitted"
+      plain "Rerender this text when the 'abc' event is emitted #{DateTime.now}"
     end
   end
 
 end
 ```
-
