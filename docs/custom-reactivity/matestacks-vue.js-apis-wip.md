@@ -65,6 +65,16 @@ As we're pretty much implementing pure Vue.js components, you can refer to the [
 #### component $refs
 
 * use `this.getRefs()` instead of `this.$refs`
+* use `scoped_ref()` when applying refs to your componen template:
+
+```ruby
+def response
+    # ...
+    div ref: "some-ref" # <-- not picked up by this.getRefs()
+    # ...
+    div "matestack-ui-core-ref": scoped_ref('some-ref')
+end
+```
 
 #### component $el
 

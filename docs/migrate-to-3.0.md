@@ -383,8 +383,16 @@ end
 ### component $refs
 
 * use `this.getRefs()` instead of `this.$refs`
+* adjust ref specifications in your component templates:
 
-\-> Search\&Replace
+```ruby
+def response
+    # ...
+    div ref: "some-ref" # <-- not picked up by this.getRefs()
+    # ...
+    div "matestack-ui-core-ref": scoped_ref('some-ref')
+end
+```
 
 ### component $el
 

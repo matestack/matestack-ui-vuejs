@@ -1,6 +1,6 @@
 # Custom Vue.js Components
 
-In order to equip a Ruby component with some JavaScript, we associate the Ruby component with a Vue.js JavaScript component. The Ruby component therefore needs to inherit from `Matestack::Ui::VueJsComponent`. Matestack will then render a HTML component tag with some special attributes and props around the response defined in the Ruby component. The Vue.js JavaScript component \(defined in a separate JavaScript file and managed via Webpacker\) will treat the response of the Ruby component as its template.
+In order to equip a Ruby component with some JavaScript, we associate the Ruby component with a Vue.js JavaScript component. The Ruby component therefore needs to inherit from `Matestack::Ui::VueJsComponent`. Matestack will then render a HTML component tag with some special attributes and props around the response defined in the Ruby component. The Vue.js JavaScript component (defined in a separate JavaScript file and managed via Webpacker) will treat the response of the Ruby component as its template.
 
 ## Structure, files and registry
 
@@ -62,6 +62,7 @@ The Vue.js JavaScript file needs to be imported by some kind of JavaScript packa
 For **Webpacker** it would look like this:
 
 `javascript/packs/application.js`
+
 ```js
 import { createApp } from 'vue'
 import MatestackUiVueJs from 'matestack-ui-vuejs'
@@ -89,12 +90,11 @@ If setup correctly, Matestack will render the component to:
 </component>
 ```
 
-As you can see, the component tag is referencing the Vue.js JavaScript component via `is` and tells the JavaScript component that it should use the inner html \(coming from the `response` method\) as the template of the component.
+As you can see, the component tag is referencing the Vue.js JavaScript component via `is` and tells the JavaScript component that it should use the inner html (coming from the `response` method) as the template of the component.
 
 `{{ vc.foo }}` will be evaluated to "bar" as soon as Vue.js has booted and mounted the component in the browser. `{{ foo }}` is not working!
 
-The prefix `vc.` is short for `Vue Component` and is necessary for referencing the correct component scope. Within the JavaScript file, you still simply use `this.`
-The prefix is required since Vue 3 removed proper inline template support. Behind the scenes MatestackUiVueJs is using Vue's `default slot` mechanism in order to enable inline templates.
+The prefix `vc.` is short for `Vue Component` and is necessary for referencing the correct component scope. Within the JavaScript file, you still simply use `this.` The prefix is required since Vue 3 removed proper inline template support. Behind the scenes MatestackUiVueJs is using Vue's `default slot` mechanism in order to enable inline templates.
 
 Matestack will inject JSON objects into the Vue.js JavaScript component through the `props` and `params` tags if either props or params are available. This data is injected once on initial server side rendering of the component's markup. See below, how you can pass in data to the Vue.js JavaScript component.
 
@@ -185,8 +185,18 @@ As we're pretty much implementing pure Vue.js components, you can refer to the [
 
 #### component $refs
 
-- use `this.getRefs()` instead of `this.$refs`
+* use `this.getRefs()` instead of `this.$refs`
+* user `scoped_ref()` when applying refs to your componen template:
+
+```ruby
+def response
+    # ...
+    div ref: "some-ref" # <-- not picked up by this.getRefs()
+    # ...
+    div "matestack-ui-core-ref": scoped_ref('some-ref')
+end
+```
 
 #### component $el
 
-- use `this.getElement()` instead of `this.$el`
+* use `this.getElement()` instead of `this.$el`
