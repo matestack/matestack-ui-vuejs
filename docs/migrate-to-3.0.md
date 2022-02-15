@@ -383,22 +383,26 @@ end
 ### component $refs
 
 * use `this.getRefs()` instead of `this.$refs`
-* adjust ref specifications in your component templates:
+* use `matestack_ui_vuejs_ref()` when applying refs to your componen template:
 
 ```ruby
 def response
     # ...
     div ref: "some-ref" # <-- not picked up by this.getRefs()
     # ...
-    div "matestack-ui-core-ref": scoped_ref('some-ref')
+    div "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref('some-ref')
 end
 ```
 
 ### component $el
 
-* use `this.getElement()` instead of `this.$el`
+* use `this.getElement()` instead of `this.$el` in order to get the root element defined in your `response` method
 
 \-> Search\&Replace
+
+*Additional Note:*
+
+* use `this.getTemplateElement()` in order to get the template element (`matestack-component-template` tag) wrapping the root element defined in your `response` method
 
 ### component beforeDestroy hook
 

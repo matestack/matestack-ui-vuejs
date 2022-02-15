@@ -2,9 +2,15 @@
 
 ## v3.0.0.rc2 Release - 2022-02-15
 
+### Changes
+
+- changed `matestack-ui-core-ref` attr to `matestack-ui-vuejs-ref` for better semantics
+- changed `scoped_ref` method to `matestack_ui_vuejs_ref` for better semantics
+
 ### Bugfixes
 
 - fixed ID rendering on form input components
+- fixed return value of `getElement` method in order to match previous behaviour of `$el`
 
 ## v3.0.0.rc1 Release - 2022-02-11
 
