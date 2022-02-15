@@ -1,6 +1,6 @@
 //used in specs!
 
-import MatestackUiVueJs from 'matestack-ui-vue_js'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
 
 const testComponent = {
   mixins: [MatestackUiVueJs.componentMixin],

@@ -1,5 +1,5 @@
 import consumer from "./consumer"
-import MatestackUiVueJs from 'matestack-ui-vue_js'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
 
 consumer.subscriptions.create("MatestackUiVueJsChannel", {
   connected() {

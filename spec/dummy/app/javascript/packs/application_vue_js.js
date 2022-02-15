@@ -11,7 +11,7 @@ require("@rails/ujs").start()
 require("channels")
 
 import { createApp } from 'vue'
-import MatestackUiVueJs from 'matestack-ui-vue_js'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
 
 //for specs only
 window.MatestackUiVueJs = MatestackUiVueJs // making MatestackUiVueJs globally available for test compatability
