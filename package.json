@@ -1,6 +1,6 @@
 {
   "name": "matestack-ui-vuejs",
-  "version": "3.0.0-rc1",
+  "version": "3.0.0-rc2",
   "main": "./lib/matestack/ui/vue_js/index.js",
   "files": [
     "lib/**/*.js",
