@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-alpine3.12
+FROM ruby:3.0-alpine3.12
 
 RUN gem install bundler:2.1.4
 
@@ -9,7 +9,7 @@ RUN apk update --no-cache && \
 WORKDIR /app
 
 COPY ./lib/ /app/lib/
-COPY matestack-ui-vue_js.gemspec /app/
+COPY matestack-ui-vuejs.gemspec /app/
 COPY Gemfile* /app/
 RUN bundle install
 
