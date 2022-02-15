@@ -44,7 +44,7 @@ module Matestack
               attributes.except(:options).merge({
                 multiple: multiple,
                 ":id": id,
-                "matestack-ui-core-ref": scoped_ref("select#{'.multiple' if multiple}.#{key}"),
+                "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref("select#{'.multiple' if multiple}.#{key}"),
                 'value-type': value_type(select_options.first),
                 'init-value': init_value,
               })

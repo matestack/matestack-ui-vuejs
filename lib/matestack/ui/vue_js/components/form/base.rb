@@ -12,7 +12,7 @@ module Matestack
             end
 
             def component_attributes
-              super.merge("matestack-ui-core-ref": "#{form_context.component_uid}-#{component_id}")
+              super.merge("matestack-ui-vuejs-ref": "#{form_context.component_uid}-#{component_id}")
             end
 
             def component_id
@@ -45,7 +45,11 @@ module Matestack
               if ctx.id.present?
                 "'#{ctx.id}'"
               else
-                "'#{key}'+vc.parentNestedFormRuntimeId"
+                if form_context.is_nested_form?
+                  "'#{key}'+vc.parentNestedFormRuntimeId"
+                else
+                  "'#{key}'"
+                end
               end
             end
 
@@ -61,7 +65,7 @@ module Matestack
 
             def attributes
               (options || {}).merge({
-                "matestack-ui-core-ref": scoped_ref("input.#{attribute_key}"),
+                "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref("input.#{attribute_key}"),
                 ":id": id,
                 type: ctx.type,
                 multiple: ctx.multiple,

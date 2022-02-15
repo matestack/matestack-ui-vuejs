@@ -28,6 +28,35 @@ describe "Form Component", type: :feature, js: true do
     allow_any_instance_of(FormTestController).to receive(:expect_params)
   end
 
+  describe "DOM structure" do
+    it "is properly rendered" do
+      class ExamplePage < Matestack::Ui::Page
+        def response
+          matestack_form form_config do
+            form_input key: :plain_input, type: :text
+            form_input key: :input_with_id, type: :text, id: "some-id"
+            form_input key: :input_with_id_and_class, type: :text, id: "some-other-id", class: "some-class"
+            button "Submit me!"
+          end
+        end
+
+        def form_config
+          return {
+            for: :my_object,
+            method: :post,
+            path: success_form_test_path(id: 42)
+          }
+        end
+      end
+
+      visit "/example"
+
+      expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-input > input#plain_input[type="text"]')
+      expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-input > input#some-id[type="text"]')
+      expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-input > input#some-other-id.some-class[type="text"]')
+    end
+  end
+
   describe "Async submit update request with success, which does not reset the input fields" do
     # https://github.com/matestack/matestack-ui-core/issues/304
 

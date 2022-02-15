@@ -36,7 +36,7 @@ module Matestack
                 ":id": item_id(item),
                 name: item_name(item),
                 type: :radio,
-                "matestack-ui-core-ref": scoped_ref("select.#{key}"),
+                "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref("select.#{key}"),
                 'value-type': value_type(item_value(radio_options.first))
               }).tap do |attrs|
                 attrs[value_key(item)] = item_value(item)

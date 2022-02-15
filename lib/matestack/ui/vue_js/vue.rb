@@ -18,7 +18,7 @@ module Matestack
 
         def vue_component(&block)
           Matestack::Ui::Core::Base.new(:component, component_attributes) do
-            Matestack::Ui::Core::Base.new("matestack-component-template", 'id': "uid-#{component_uid}") do
+            Matestack::Ui::Core::Base.new("matestack-component-template", 'for': vue_name, 'id': "uid-#{component_uid}") do
               yield
             end
           end
@@ -51,7 +51,7 @@ module Matestack
         end
         alias :config :vue_props
 
-        def scoped_ref(value)
+        def matestack_ui_vuejs_ref(value)
           return "#{component_uid}-#{value}" unless value.nil?
         end
 

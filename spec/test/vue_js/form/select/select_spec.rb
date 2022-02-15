@@ -30,6 +30,44 @@ describe "Form Component", type: :feature, js: true do
       allow_any_instance_of(FormTestController).to receive(:expect_params)
     end
 
+    describe "DOM structure" do
+      it "is properly rendered" do
+        class ExamplePage < Matestack::Ui::Page
+          def response
+            matestack_form form_config do
+              form_select key: :plain_input, options: [1, 2]
+              form_select key: :input_with_id, options: [1, 2], id: "some-id"
+              form_select key: :input_with_id_and_class, options: [1, 2], id: "some-other-id", class: "some-class"
+              button "Submit me!"
+            end
+          end
+
+          def form_config
+            return {
+              for: :my_object,
+              method: :post,
+              path: select_success_form_test_path(id: 42)
+            }
+          end
+        end
+
+        visit "/example"
+        # sleep
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#plain_input')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#plain_input > option[value="1"]' )
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#plain_input > option[value="2"]' )
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-id')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-id > option[value="1"]' )
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-id > option[value="2"]' )
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-other-id.some-class')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-other-id.some-class > option[value="1"]' )
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-select > select#some-other-id.some-class > option[value="2"]' )
+      end
+    end
+
     describe "Dropdown" do
 
       it "takes an array of options or hash and submits selected item" do

@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.0.rc2 Release - 2022-02-15
+
+### Bugfixes
+
+- fixed ID rendering on form input components
+
 ## v3.0.0.rc1 Release - 2022-02-11
 
 - please read the [migration guide](docs/migrate-to-3.0.md)

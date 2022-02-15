@@ -25,7 +25,7 @@ module Matestack
             def attributes
               {
                 class: 'matestack-form',
-                "matestack-ui-core-ref": scoped_ref('form'),
+                "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref('form'),
                 'v-bind:class': "{ 'has-errors': vc.hasErrors(), loading: vc.loading }",
                 'v-on:submit.prevent': 'vc.perform',
               }

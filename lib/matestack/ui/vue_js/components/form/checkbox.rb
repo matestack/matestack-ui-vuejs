@@ -47,7 +47,7 @@ module Matestack
                 type: :checkbox,
                 name: item_label(item),
                 "#{value_key(item)}": item_value(item),
-                "matestack-ui-core-ref": scoped_ref("select.multiple.#{key}"),
+                "matestack-ui-vuejs-ref": matestack_ui_vuejs_ref("select.multiple.#{key}"),
                 'v-on:change': change_event,
                 'init-value': (init_value || []).to_json,
                 'v-bind:class': "{ '#{error_class}': #{error_key} }",

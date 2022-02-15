@@ -30,6 +30,50 @@ describe "Form Component", type: :feature, js: true do
       allow_any_instance_of(FormTestController).to receive(:expect_params)
     end
 
+    describe "DOM structure" do
+      it "is properly rendered" do
+        class ExamplePage < Matestack::Ui::Page
+          def response
+            matestack_form form_config do
+              form_checkbox key: :boolean_checkbox, label: "Consent?"
+              form_checkbox key: :plain_input, options: [1, 2]
+              form_checkbox key: :input_with_id, id: "some-id", options: [1, 2]
+              form_checkbox key: :input_with_id_and_class, id: "some-other-id", class: "some-class", options: [1, 2]
+              button "Submit me!"
+            end
+          end
+
+          def form_config
+            return {
+              for: :my_object,
+              method: :post,
+              path: checkbox_success_form_test_path(id: 42)
+            }
+          end
+        end
+
+        visit "/example"
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#boolean_checkbox_1[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="boolean_checkbox_1"]', text: "Consent?")
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#plain_input_1[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="plain_input_1"]', text: "1")
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#plain_input_2[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="plain_input_2"]', text: "2")
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#some-id_1[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="some-id_1"]', text: "1")
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#some-id_2[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="some-id_2"]', text: "2")
+
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#some-other-id_1[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="some-other-id_1"]', text: "1")
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > input#some-other-id_2[type="checkbox"]')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-checkbox > label[for="some-other-id_2"]', text: "2")
+      end
+    end
+
     it "takes an array of options or hash and submits (multiple) selected item(s)" do
       class ExamplePage < Matestack::Ui::Page
         def response

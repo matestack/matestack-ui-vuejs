@@ -11,7 +11,6 @@ end
 
 require "#{vue_js_base_path}/version"
 
-require "#{vue_js_base_path}/utils"
 require "#{vue_js_base_path}/vue_attributes"
 require "#{vue_js_base_path}/vue"
 require "#{vue_js_base_path}/components/app"

@@ -23,6 +23,35 @@ describe "Form Component", type: :feature, js: true do
 
   describe "textarea" do
 
+    describe "DOM structure" do
+      it "is properly rendered" do
+        class ExamplePage < Matestack::Ui::Page
+          def response
+            matestack_form form_config do
+              form_textarea key: :plain_input
+              form_textarea key: :input_with_id, id: "some-id"
+              form_textarea key: :input_with_id_and_class, id: "some-other-id", class: "some-class"
+              button "Submit me!"
+            end
+          end
+
+          def form_config
+            return {
+              for: :my_object,
+              method: :post,
+              path: textarea_success_form_test_path(id: 42)
+            }
+          end
+        end
+
+        visit "/example"
+        
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-textarea > textarea#plain_input')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-textarea > textarea#some-id')
+        expect(page).to have_selector('form > matestack-component-template > div.matestack-ui-core-form-textarea > textarea#some-other-id.some-class')
+      end
+    end
+
     it "can be submitted dynamically without page reload" do
       class SomeComponent < Matestack::Ui::Component
         def response
@@ -109,7 +138,7 @@ describe "Form Component", type: :feature, js: true do
             button "Submit me!"
           end
         end
-  
+
         def form_config
           {
             for: :my_object,
@@ -131,7 +160,7 @@ describe "Form Component", type: :feature, js: true do
               button "Submit me!"
             end
         end
-  
+
         def form_config
           {
             for: :my_object,
@@ -140,7 +169,7 @@ describe "Form Component", type: :feature, js: true do
           }
         end
       end
-  
+
       visit "/example"
       expect(page).to have_xpath('//label[contains(.,"some label")]')
     end
@@ -153,7 +182,7 @@ describe "Form Component", type: :feature, js: true do
             button "Submit me!"
           end
         end
-  
+
         def form_config
           {
             for: :my_object,
@@ -162,7 +191,7 @@ describe "Form Component", type: :feature, js: true do
           }
         end
       end
-  
+
       visit "/example"
       fill_in "textarea", with: "text"
       click_button "Submit me!"
@@ -171,17 +200,17 @@ describe "Form Component", type: :feature, js: true do
 
     it "can be mapped to an Active Record Model" do
       Object.send(:remove_const, :TestModel)
-  
+
       class TestModel < ApplicationRecord
         validates :description, presence:true
       end
-  
+
       class ExamplePage < Matestack::Ui::Page
         def prepare
           @test_model = TestModel.new
           @test_model.title = "Title"
         end
-  
+
         def response
           matestack_form form_config do
             form_textarea id: "title", key: :title
@@ -189,7 +218,7 @@ describe "Form Component", type: :feature, js: true do
             button "Submit me!"
           end
         end
-  
+
         def form_config
           {
             for: @test_model,
@@ -198,13 +227,13 @@ describe "Form Component", type: :feature, js: true do
           }
         end
       end
-  
+
       visit "/example"
       expect(page).to have_field("title", with: "Title")
       click_button "Submit me!"
       expect(page).to have_field("title", with: "Title")
       expect(page).to have_xpath('//div[@class="errors"]/div[@class="error" and contains(.,"can\'t be blank")]')
-  
+
       value = "#{DateTime.now}"
       fill_in "description", with: value
       page.find("body").click #defocus
