@@ -12,9 +12,9 @@ Version 3 was released on in February 2022. Click here for more [details](migrat
 
 **Most important changes:**
 
-* Split `matestack-ui-core` into `matestack-ui-core` and `matestack-ui-vue_js`
+* Split `matestack-ui-core` into `matestack-ui-core` and `matestack-ui-vuejs`
 * Rails 7 support
-* Vue 3 support in `matestack-ui-vue_js`
+* Vue 3 support in `matestack-ui-vuejs`
 
 ****
 
