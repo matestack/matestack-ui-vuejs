@@ -39,8 +39,8 @@
 ## Custom Reactivity
 
 * [Custom Vue.js Components](custom-reactivity/custom-vue-js-components.md)
-* [Third party Vue.js Components](custom-reactivity/third-party-vue.js-components.md)
 * [Matestack's Vue.js APIs](custom-reactivity/matestacks-vue.js-apis.md)
+* [Third party Vue.js Components](custom-reactivity/third-party-vue.js-components.md)
 * [Third Party JavaScript](custom-reactivity/third-party-javascript.md)
 
 ## Integrations
