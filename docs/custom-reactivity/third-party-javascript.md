@@ -1,2 +1,3 @@
-# Third Party JavaScript \[WIP\]
+# Third Party JavaScript
 
+WIP
