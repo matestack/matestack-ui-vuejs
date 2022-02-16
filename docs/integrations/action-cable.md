@@ -1,6 +1,6 @@
 # Action Cable
 
-[ActionCable](https://guides.rubyonrails.org/action_cable_overview.html#server-side-components-connections) seamlessly integrates WebSockets in Ruby on Rails. It allows for real-time communication between your clients and server. ActionCable and matestack can be combined to emit events using matestacks event hub from the server side, for example triggering a rerendering of a chat view if a new message was created on the server.
+[ActionCable](https://guides.rubyonrails.org/action\_cable\_overview.html#server-side-components-connections) seamlessly integrates WebSockets in Ruby on Rails. It allows for real-time communication between your clients and server. ActionCable and matestack can be combined to emit events using matestacks event hub from the server side, for example triggering a rerendering of a chat view if a new message was created on the server.
 
 In this guide we will provide information on how to create channels, consumers and subscriptions to broadcast messages to all subscribed clients or target specific user via user authenticated connections.
 
@@ -8,15 +8,15 @@ In this guide we will provide information on how to create channels, consumers a
 
 Create a channel using the rails generator. Run the command `rails generate channel MatestackUiVueJsChannel`.
 
-This will create a `app/javascript/channels/matestack_ui_core_channel.js` file where you can setup your subscriptions.
+This will create a `app/javascript/channels/matestack_ui_vue_js_channel.js` file where you can setup your subscriptions.
 
 It also generates the corresponding server side `MatestackUiVueJsChannel < ApplicationCable::Channel` class.
 
-The `matestack_ui_core_channel.js` is responsible to create a subscription to the "MatestackUiVueJsChannel".
+The `matestack_ui_vue_js_channel.js` is responsible to create a subscription to the "MatestackUiVueJsChannel".
 
 All we need to do is to tell this channel that it should trigger an event using the `MatestackUiVueJs.eventHub` with the received data.
 
-`app/javascript/channels/matestack_ui_core_channel.js`
+`app/javascript/channels/matestack_ui_vue_js_channel.js`
 
 ```javascript
 import MatestackUiVueJs from "matestack-ui-vuejs"
@@ -39,7 +39,7 @@ consumer.subscriptions.create("MatestackUiVueJsChannel", {
 
 We expect the pushed data to include an _event_ key with the name of the event that should be triggered. We also pass the _data_ as event payload to the event emit, giving you the possibility to work with server side send data.
 
-If you do not want to use the rails generator just create the `matestack_ui_core_channel.js` yourself in `app/javascript/channels/` and paste the above code in it.
+If you do not want to use the rails generator just create the `matestack_ui_vue_js_channel.js` yourself in `app/javascript/channels/` and paste the above code in it.
 
 ## Usage
 
@@ -52,7 +52,7 @@ If you've used the generator to setup your channels you already have a `app/chan
 ```ruby
 class MatestackUiVueJsChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "matestack_ui_core"
+    stream_from "matestack_ui_vuejs"
   end
 
   def unsubscribed
@@ -64,7 +64,7 @@ end
 Emitting events from controller actions or elsewhere in your Rails application can be done by calling:
 
 ```ruby
-ActionCable.server.broadcast('matestack_ui_core', {
+ActionCable.server.broadcast('matestack_ui_vuejs', {
   event: 'update'
 })
 ```
@@ -225,5 +225,4 @@ PrivateChannel.broadcast_to(user, {
 
 ## Conclusion
 
-Creating channels and connections can be done like you want. To learn more about all the possibilities read Rails Guide about [ActionCable](https://guides.rubyonrails.org/action_cable_overview.html). Important for the use with matestack is to emit events in the JavaScript `received(data)` callback and have a clear structure to determine what the name of the event is which should be emitted. Like shown above we recommend using an `:event` key in your websocket broadcast, which represents the event name that gets emitted through the event hub. You optionally can pass all the received data as payload to that event or also use a specific key. As this is optional you don't need to pass any data to the event emit.
-
+Creating channels and connections can be done like you want. To learn more about all the possibilities read Rails Guide about [ActionCable](https://guides.rubyonrails.org/action\_cable\_overview.html). Important for the use with matestack is to emit events in the JavaScript `received(data)` callback and have a clear structure to determine what the name of the event is which should be emitted. Like shown above we recommend using an `:event` key in your websocket broadcast, which represents the event name that gets emitted through the event hub. You optionally can pass all the received data as payload to that event or also use a specific key. As this is optional you don't need to pass any data to the event emit.
