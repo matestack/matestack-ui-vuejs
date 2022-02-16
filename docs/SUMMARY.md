@@ -2,6 +2,7 @@
 
 * [Welcome](README.md)
 * [Migrating to 3.0](migrate-to-3.0.md)
+* [Back to 2.1 (via core)](https://docs.matestack.io/matestack-ui-bootstrap/v/2.1.0)
 
 ## Getting started
 
