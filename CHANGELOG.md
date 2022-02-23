@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.0.rc3 Release - 2022-02-23
+
+### Bugfixes
+
+- fixed component UIDs within dynamically added nested forms
+
 ## v3.0.0.rc2 Release - 2022-02-15
 
 ### Changes
