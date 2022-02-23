@@ -10,6 +10,8 @@
 
 Boost your productivity & easily create reactive web UIs in pure Ruby. Easily extend with pure JavaScript if required. No Opal involved.
 
+**New repo, old git history? This repo was duplicated from `matestack-ui-core` in order to extract Vue.js features into `matestack-ui-vuejs` in Feburary 2022**
+
 ## About
 
 `matestack-ui-vuejs` ships all you need to build **reactive** UIs in **pure Ruby** orchestrating prebuilt Vue.js components with a simple Ruby DSL.

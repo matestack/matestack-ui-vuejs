@@ -2,13 +2,14 @@
 
 * [Welcome](README.md)
 * [Migrating to 3.0](migrate-to-3.0.md)
+* [Back to 2.1 (via Core)](https://docs.matestack.io/matestack-ui-core/v/2.1.0)
 
 ## Getting started
 
 * [Installation & Update](getting-started/installation-update.md)
 * [Hello World](getting-started/hello-world.md)
 
-## Built-in Reactivity composed in pure Ruby <a href="#built-in-reactivity" id="built-in-reactivity"></a>
+## Built-in Reactivity
 
 * [Emit Client Side Events](built-in-reactivity/emit-client-side-events/README.md)
   * [Onclick Component API](built-in-reactivity/emit-client-side-events/onclick-component-api.md)
@@ -35,13 +36,12 @@
 * [Reactive Collections](built-in-reactivity/reactive-collections/README.md)
   * [Overview & API](built-in-reactivity/reactive-collections/overview.md)
 
-## Custom Reactivity implemented in Vue.js <a href="#custom-reactivity" id="custom-reactivity"></a>
+## Custom Reactivity
 
 * [Custom Vue.js Components](custom-reactivity/custom-vue-js-components.md)
-* [Third party Vue.js Components \[WIP\]](custom-reactivity/third-party-vue.js-components-wip.md)
-* [Matestack's Vue.js APIs \[WIP\]](custom-reactivity/matestacks-vue.js-apis-wip.md)
-* [Matestack's Vuex API \[WIP\]](custom-reactivity/matestacks-vuex-api-wip.md)
-* [Third Party JavaScript \[WIP\]](custom-reactivity/third-party-javascript.md)
+* [Matestack's Vue.js APIs](custom-reactivity/matestacks-vue.js-apis.md)
+* [Third party Vue.js Components](custom-reactivity/third-party-vue.js-components.md)
+* [Third Party JavaScript](custom-reactivity/third-party-javascript.md)
 
 ## Integrations
 
