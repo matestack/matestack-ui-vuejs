@@ -1513,6 +1513,125 @@ describe "nested forms supporting nested attributes API from ActiveRecord models
 
     end
 
+    describe "supports custom form input components on dynamically added child forms" do
+
+      before do
+        @dummy_model = DummyModel.create(title: "existing-dummy-model-title")
+
+        class Components::CustomFormInputTest < Matestack::Ui::VueJs::Components::Form::Input
+          vue_name "custom-form-input-test" # defined in app/spec/dummy/javascript/components.js
+
+          def response
+            div class: "custom-input-markup" do
+              label "my form input"
+              span ":id": "'input_uid'+vc.$parent.nestedFormRuntimeId" do
+                plain "UID: {{ vc.props['component_uid'] }}"
+              end
+              input input_attributes
+              button "change value", "@click": "vc.changeValueViaJs(42)", type: :button
+              render_errors
+            end
+          end
+
+          register_self_as(:custom_form_input_test)
+        end
+
+        class ExamplePage < Matestack::Ui::Page
+
+          def prepare
+            @dummy_model = DummyModel.last
+          end
+
+          def response
+            matestack_form form_config do
+              form_input key: :title, type: :text, label: "dummy_model_title_input", id: "dummy_model_title_input"
+
+              @dummy_model.dummy_child_models.each do |dummy_child_model|
+                dummy_child_model_form dummy_child_model
+              end
+
+              form_fields_for_add_item key: :dummy_child_models_attributes, prototype: method(:dummy_child_model_form) do
+                button "add", type: :button # type: :button is important! otherwise remove on first item is triggered on enter
+              end
+
+              br
+              plain "data: {{vc.data}}"
+              br
+
+              button "Submit me!"
+
+              toggle show_on: "success", hide_after: 1000 do
+                plain "success!"
+              end
+              toggle show_on: "failure", hide_after: 1000 do
+                plain "failure!"
+              end
+            end
+          end
+
+          def dummy_child_model_form dummy_child_model = DummyChildModel.new(title: "init-value")
+            form_fields_for dummy_child_model, key: :dummy_child_models_attributes do
+              span ":id": "'uid'+vc.nestedFormRuntimeId" do
+                plain "UID: {{ vc.props['component_uid'] }}"
+              end
+              form_input key: :title, type: :text, label: "dummy-child-model-title-input"
+              custom_form_input_test key: :bar, type: :text, id: "bar"
+              form_fields_for_remove_item do
+                button "remove", ":id": "'remove'+vc.nestedFormRuntimeId", type: :button # id is just required in this spec, but type: :button is important! otherwise remove on first item is triggered on enter
+              end
+            end
+          end
+
+          def form_config
+            {
+              for: @dummy_model,
+              method: :put,
+              path: nested_forms_spec_submit_update_path(id: @dummy_model.id),
+              success: { emit: "success" },
+              failure: { emit: "failure" }
+            }
+          end
+        end
+      end
+
+      it "dynamically adds unlimited new nested forms with different UIDs enabling proper getElement() usage when working with child form DOM" do
+        # relevant form form input components accessing their child form DOM via UID
+
+        dummy_model = DummyModel.last
+        child_model_0 = dummy_model.dummy_child_models.create(title: "existing-child-model-title")
+
+        visit "/example"
+        # sleep
+        uids = []
+        expect(page).to have_selector('#dummy_model_title_input')
+        expect(page).to have_selector('#title_dummy_child_models_attributes_child_0')
+        within "#dummy_child_models_attributes_child_0" do
+          uids << page.find_by_id("uid_dummy_child_models_attributes_child_0")
+          uids << page.find_by_id("input_uid_dummy_child_models_attributes_child_0")
+        end
+        expect(page).to have_xpath('//matestack-component-template[@id="dummy_child_models_attributes_child_0"]//div[@class="custom-input-markup"]/input[@id="bar" and @class="js-added-class"]')
+        click_on "add"
+        within "#dummy_child_models_attributes_child_1" do
+          uids << page.find_by_id("uid_dummy_child_models_attributes_child_1")
+          uids << page.find_by_id("input_uid_dummy_child_models_attributes_child_1")
+          click_on "change value"
+        end
+        expect(page).to have_xpath('//div[@class="matestack-form-fields-for" and @id="dummy_child_models_attributes_child_1"]//div[@class="custom-input-markup"]/input[@id="bar" and @class="js-added-class"]')
+        click_on "add"
+        within "#dummy_child_models_attributes_child_2" do
+          uids << page.find_by_id("uid_dummy_child_models_attributes_child_2")
+          uids << page.find_by_id("input_uid_dummy_child_models_attributes_child_2")
+        end
+        expect(page).to have_xpath('//div[@class="matestack-form-fields-for" and @id="dummy_child_models_attributes_child_2"]//div[@class="custom-input-markup"]/input[@id="bar" and @class="js-added-class"]')
+
+        expect(uids.count).to eq(uids.uniq.count)
+
+        expect(page).to have_content("data: { \"dummy_child_models_attributes\": [ { \"_destroy\": false, \"id\": \"#{child_model_0.id}\", \"title\": \"existing-child-model-title\", \"bar\": null }, { \"_destroy\": false, \"id\": null, \"title\": \"init-value\", \"bar\": 42 }, { \"_destroy\": false, \"id\": null, \"title\": \"init-value\", \"bar\": null } ], \"title\": \"existing-dummy-model-title\" }")
+
+      end
+
+    end
+
   end
 
 end
