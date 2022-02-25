@@ -9,7 +9,7 @@
 Add 'matestack-ui-vuejs' to your Gemfile
 
 ```ruby
-gem 'matestack-ui-vuejs', "~> 3.0.0.rc1"
+gem 'matestack-ui-vuejs', "~> 3.0.0.rc3"
 ```
 
 and run
@@ -49,7 +49,7 @@ Add 'matestack-ui-vuejs' to your `package.json` by adding:
 {
   "name": "my-app",
   "dependencies": {
-    "matestack-ui-vuejs": "^3.0.0-rc2", // <-- new package name
+    "matestack-ui-vuejs": "^3.0.0-rc3", // <-- new package name
     "..."
   }
 }

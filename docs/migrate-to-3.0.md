@@ -15,8 +15,8 @@ If you've used reactivity features of `matestack-ui-core` 2.x you now have to in
 `Gemfile`
 
 ```ruby
-gem 'matestack-ui-core', '~> 3.0.0.rc-1'
-gem 'matestack-ui-vuejs', '~> 3.0.0.rc-1'
+gem 'matestack-ui-core', '~> 3.0.0.rc2'
+gem 'matestack-ui-vuejs', '~> 3.0.0.rc3'
 ```
 
 ## Remove `matestack-ui-core` JavaScript package
@@ -36,7 +36,7 @@ yarn remove matestack-ui-core
 {
   "name": "my-app",
   "dependencies": {
-    "matestack-ui-vuejs": "^3.0.0-rc1", // <-- new package name
+    "matestack-ui-vuejs": "^3.0.0-rc3", // <-- new package name
     "..."
   }
 }
@@ -400,7 +400,7 @@ end
 
 \-> Search\&Replace
 
-*Additional Note:*
+_Additional Note:_
 
 * use `this.getTemplateElement()` in order to get the template element (`matestack-component-template` tag) wrapping the root element defined in your `response` method
 
