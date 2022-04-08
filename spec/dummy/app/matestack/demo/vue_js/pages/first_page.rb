@@ -7,7 +7,7 @@ class Demo::VueJs::Pages::FirstPage < Matestack::Ui::Page
       plain "play around! --> spec/dummy/app/matestack/demo/vue_js/pages/first_page.rb"
     end
 
-    # you can call components on pages:
+    # you can call components on pages!
     Demo::VueJs::Components::StaticComponent.call(foo: "bar")
 
     onclick emit: "foo" do
