@@ -1,8 +1,9 @@
 # Changelog
 
-## v3.1.0.rc1 Release - 2022-04-08
+## v3.1.0.rc1 Release - 2022-04-13
 
 - supporting Rails 7 importmaps via rollup building an esm module while still supporting webpacker
+- fixing require issues: Bundler requires matestack/ui/vuejs derived from gem name, matestack/ui/vue_js is present
 
 ## v3.0.0 Release - 2022-03-04
 
