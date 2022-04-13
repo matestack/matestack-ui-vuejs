@@ -1,4 +1,6 @@
 import resolve from "@rollup/plugin-node-resolve"
+import commonjs from "@rollup/plugin-commonjs"
+import json from '@rollup/plugin-json';
 import { terser } from "rollup-plugin-terser"
 
 const terserOptions = {
@@ -9,7 +11,7 @@ const terserOptions = {
 export default [
   {
     input: "./lib/matestack/ui/vue_js/index.js",
-    external: ['vue', 'axios'],
+    external: ['vue'],
     output: [
       {
         file: "./dist/matestack-ui-vuejs.esm.js",
@@ -18,7 +20,9 @@ export default [
       }
     ],
     plugins: [
-      resolve(),
+      resolve({ browser: true }),
+      json(),
+      commonjs(),
       terser(terserOptions)
     ]
   }
