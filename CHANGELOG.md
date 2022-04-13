@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0 Release - 2022-04-13
+
+- same as v3.1.0.rc2
+
 ## v3.1.0.rc2 Release - 2022-04-13
 
 - fixing package.json in order to publish new esm module
