@@ -6,6 +6,8 @@ RUN apk update --no-cache && \
     apk add build-base postgresql-dev git nodejs yarn tzdata bash sqlite-dev npm && \
     mkdir -p /app
 
+npm install --global rollup
+
 WORKDIR /app
 
 COPY ./lib/ /app/lib/
