@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0.rc2 Release - 2022-04-13
+
+- fixing package.json in order to publish new esm module
+
 ## v3.1.0.rc1 Release - 2022-04-13
 
 - supporting Rails 7 importmaps via rollup building an esm module while still supporting webpacker
