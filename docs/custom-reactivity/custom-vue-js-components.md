@@ -59,11 +59,11 @@ It can be placed anywhere in your apps folder structure, but we recommend to put
 The Vue.js JavaScript file needs to be imported by some kind of JavaScript package manager.
 {% endhint %}
 
-For **Webpacker** it would look like this:
+For **Webpacker** it would look like this: **(follow the install guide!)**
 
-`javascript/packs/application.js`
+`app/javascript/packs/application.js`
 
-```js
+```javascript
 import { createApp } from 'vue'
 import MatestackUiVueJs from 'matestack-ui-vuejs'
 
@@ -77,6 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
   MatestackUiVueJs.mount(appInstance)
 })
 ```
+
+For **Importmap** it would like this: **(follow the install guide!)**
+
+`config/importmap.rb`
+
+```ruby
+# other pins ...
+pin "some_component", to: "components/some_component.js" # do not prefix app/matestack!
+```
+
+`app/javascript/packs/application.js`
+
+```javascript
+import { createApp } from 'vue'
+import MatestackUiVueJs from 'matestack-ui-vuejs'
+
+import someComponent from 'some_component' // import component definition from source
+
+const appInstance = createApp({})
+
+appInstance.component('some-component', someComponent) // register at appInstance
+
+document.addEventListener('DOMContentLoaded', () => {
+  MatestackUiVueJs.mount(appInstance)
+})
+```
+
+**In both cases:**
 
 If setup correctly, Matestack will render the component to:
 
