@@ -73,8 +73,8 @@ Vue.js 2.x is supported when using the Compat build of Vue.js
 
 Start right away and install `matestack-ui-vuejs` on top of your Rails app, or read something about the features below.
 
-{% content-ref url="getting-started/installation-update.md" %}
-[installation-update.md](getting-started/installation-update.md)
+{% content-ref url="getting-started/installation-update/" %}
+[installation-update](getting-started/installation-update/)
 {% endcontent-ref %}
 
 {% content-ref url="getting-started/hello-world.md" %}

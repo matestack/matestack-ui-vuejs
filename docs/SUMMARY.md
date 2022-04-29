@@ -6,7 +6,9 @@
 
 ## Getting started
 
-* [Installation & Update](getting-started/installation-update.md)
+* [Installation & Update](getting-started/installation-update/README.md)
+  * [Importmap Install Steps](getting-started/installation-update/importmap-install-steps.md)
+  * [Webpacker Install Steps](getting-started/installation-update/webpacker-install-steps.md)
 * [Hello World](getting-started/hello-world.md)
 
 ## Built-in Reactivity
