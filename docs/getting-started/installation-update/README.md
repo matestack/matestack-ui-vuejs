@@ -56,8 +56,8 @@ For Example, your `app/views/layouts/application.html.erb` should look like this
     <!-- if you are using webpacker: -->
     <%= javascript_pack_tag 'application' %>
 
-    <!-- if you are using the asset pipeline: -->
-    <%= javascript_include_tag 'application' %>
+    <!-- if you are using importmap: -->
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
