@@ -29,6 +29,7 @@ describe "Isolate Component", type: :feature, js: true do
           span @foo_from_component, id: "foo-from-component"
           span params[:foo_from_url], id: "foo-from-url"
           span public_options[:id], id: "public-options-id"
+          span public_context.id, id: "public-context-id"
         end
       end
 
@@ -390,7 +391,7 @@ describe "Isolate Component", type: :feature, js: true do
 
   end
 
-  it "has access to injected (public) options" do
+  it "has access to injected (public) options (will be depracted)" do
 
     class ExamplePage < Matestack::Ui::Page
 
@@ -407,6 +408,46 @@ describe "Isolate Component", type: :feature, js: true do
     id = page.find('#public-options-id').text.to_i
 
     expect(id).to eq 3
+
+  end
+
+  it "has access to injected (public) context when rendered in sync" do
+
+    class ExamplePage < Matestack::Ui::Page
+
+      def response
+        div id: "page-div" do
+          some_isolated_component public_context: { id: 42 }
+        end
+      end
+
+    end
+
+    visit "/example"
+
+    id = page.find('#public-context-id').text.to_i
+
+    expect(id).to eq 42
+
+  end
+
+  it "has access to injected (public) context when rendered async" do
+
+    class ExamplePage < Matestack::Ui::Page
+
+      def response
+        div id: "page-div" do
+          some_isolated_component defer: true, public_context: { id: 42 }
+        end
+      end
+
+    end
+
+    visit "/example"
+
+    within "#public-context-id" do
+      expect(page).to have_content "42"
+    end
 
   end
 
@@ -450,6 +491,7 @@ describe "Isolate Component", type: :feature, js: true do
         div class: "some-isolated-component-with-async" do
           async rerender_on: "some-event", id: "my-id" do
             span id: "timestamp-in-async", text: DateTime.now.to_i
+            span id: "public-context-id", text: public_context.id
           end
         end
       end
@@ -465,7 +507,7 @@ describe "Isolate Component", type: :feature, js: true do
 
       def response
         div id: "page-div" do
-          some_isolated_component_with_async
+          some_isolated_component_with_async public_context: { id: 42 }
         end
       end
 
@@ -475,6 +517,10 @@ describe "Isolate Component", type: :feature, js: true do
 
     async_timestamp_before = page.find('#timestamp-in-async').text.to_i
 
+    within "#public-context-id" do
+      expect(page).to have_content "42"
+    end
+
     sleep 1
 
     page.execute_script('MatestackUiVueJs.eventHub.$emit("some-event")')
@@ -482,6 +528,10 @@ describe "Isolate Component", type: :feature, js: true do
     expect(page).not_to have_content(async_timestamp_before)
 
     async_timestamp_after = page.find('#timestamp-in-async').text.to_i #still find a timestamp, otherwise would throw an error
+
+    within "#public-context-id" do
+      expect(page).to have_content "42"
+    end
 
   end
 
@@ -713,6 +763,42 @@ describe "Isolate Component", type: :feature, js: true do
 
     page.execute_script('MatestackUiVueJs.eventHub.$emit("some-event")')
     expect(page).to have_css '#isolated-component-timestamp', visible: :all
+  end
+
+  it "can replace itself on events" do
+    # like rerender but hides the former content immediately unlike rerender_on
+    # rerender lets the former content visible until the new content is coming in
+
+    class ExamplePage < Matestack::Ui::Page
+
+      def response
+        div id: "page-div" do
+          some_isolated_component replace_on: "some-event, or-another"
+        end
+      end
+
+    end
+
+    visit "/example"
+
+    timestamp_before = page.find("#isolated-component-timestamp").text.to_i
+
+    sleep 1
+
+    page.execute_script('MatestackUiVueJs.eventHub.$emit("some-event")')
+
+    expect(page).not_to have_content(timestamp_before)
+
+    timestamp_after = page.find('#isolated-component-timestamp').text.to_i #still find a timestamp, otherwise would throw an error
+
+    sleep 1
+
+    page.execute_script('MatestackUiVueJs.eventHub.$emit("or-another")')
+
+    expect(page).not_to have_content(timestamp_after)
+
+    timestamp_after_2 = page.find('#isolated-component-timestamp').text.to_i #still find a timestamp, otherwise would throw an error
+
   end
 
   it "can inherit from a isolate application base class?" do

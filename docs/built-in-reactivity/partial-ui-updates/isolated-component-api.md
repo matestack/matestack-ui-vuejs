@@ -117,7 +117,7 @@ If `defer` is set to a positive integer (including zero) the asynchronous reques
 
 ### rerender\_on
 
-The `rerender_on` options lets you define events on which the component will be rerenderd asynchronously. Events on which the component should be rerendered are specified via a comma seperated string, for example `rerender_on: 'event_one, event_two`.
+The `rerender_on` option lets you define events on which the component will be rerenderd asynchronously. Events on which the component should be rerendered are specified via a comma seperated string, for example `rerender_on: 'event_one, event_two`.
 
 ### rerender\_delay
 
@@ -127,9 +127,19 @@ The `rerender_delay` option lets you specify a delay in ms after which the async
 
 With `init_on` you can specify events on which the isolate components gets initialized. Specify events on which the component should be initially rendered via a comma seperated string. When receiving a matching event the isolate component is rendered asynchronously. If you also specified the `defer` option the asynchronous rerendering call will be delayed by the given time in ms of the defer option. If `defer` is set to `true` the rendering will not be delayed.
 
-### public\_options
+### replace\_on
+
+Similar to `rerender_on`. Difference: When using `rerender_on`, the content of the isolated component will be visible until the new content was fetched from the server. When using `replace_on`, the content of the isolated component will be hidden immediately when receiving the event
+.
+The `replace_on` option lets you define events on which the component will be replaced asynchronously. Events on which the component should be replaceed are specified via a comma seperated string, for example `replace_on: 'event_one, event_two`.
+
+### public\_options (will be deprecated in the future! please use public_context instead)
 
 You can pass data as a hash to your custom isolate component with the `public_options` option. This data is inside the isolate component accessible via a hash with indifferent access, for example `public_options[:item_id]`. All data contained in the `public_options` will be passed as json to the corresponding Vue.js component, which means this data is visible on the client side as it is rendered in the Vue.js component config. So be careful what data you pass into `public_options`!
+
+### public\_context
+
+You can pass data as a hash to your custom isolate component with the `public_context` option. This data is inside the isolate component accessible via an OpenStruct, for example `public_context.item_id`. All data contained in the `public_context` will be passed as json to the corresponding Vue.js component, which means this data is visible on the client side as it is rendered in the Vue.js component config. So be careful what data you pass into `public_context`!
 
 Due to the isolation of the component the data needs to be stored on the client side as to encapsulate the component from the rest of the UI. For example: You want to render a collection of models in single components which should be able to rerender asynchronously without rerendering the whole UI. Since we do not rerender the whole UI there is no way the component can know which of the models it should rerender. Therefore passing for example the id in the public\_options hash gives you the possibility to access the id in an async request and fetch the model again for rerendering. See below for examples.
 
@@ -326,9 +336,9 @@ end
 
 With `init_on: 'init_time'` you can specify an event on which the isolated component should be initialized. When you click the button the event `init_time` is emitted and the isolated component asynchronously requests its content.
 
-### Use custom data in isolated components
+### Use custom data (public_context) in isolated components
 
-Like described above it is possible to use custom data in your isolated components. Just pass them as a hash to `public_options` and use them in your isolated component. Be careful, because `public_options` are visible in the raw html response from the server as they get passed to a Vue.js component.
+Like described above it is possible to use custom data in your isolated components. Just pass them as a hash to `public_context` and use them in your isolated component. Be careful, because `public_context` are visible in the raw html response from the server as they get passed to a Vue.js component.
 
 Lets render a collection of models and each of them should rerender when a user clicks a corresponding refresh button. Our model is called `Match`, representing a soccer match. It has an attribute called score with the current match score.
 
@@ -338,7 +348,7 @@ At first we create a custom isolated component.
 class Components::Match::IsolatedScore < Matestack::Ui::IsolatedComponent
 
   def prepare
-    @match = Match.find_by(public_options[:id])
+    @match = Match.find_by(public_context.id)
   end
 
   def response
@@ -366,11 +376,44 @@ class Match::Pages::Index < Matestack::Ui::Page
 
   def response
     Match.all.each do |match|
-      Components::Match::IsolatedScore.call(public_options: { id: match.id }, rerender_on: "update_match_#{match.id}")
+      Components::Match::IsolatedScore.call(public_context: { id: match.id }, rerender_on: "update_match_#{match.id}")
     end
   end
 
 end
 ```
 
-This page will render a match\_isolated\_score component for each match. If one of the isolated components gets rerendered we need the id in order to fetch the correct match. Because the server only resolves the isolated component instead of the whole UI it does not know which match exactly is requested unless the client requests a rerender with the match id. This is why `public_options` options are passed to the client side Vue.js component. So if match two should be rerendered the client requests the match\_isolated\_score component with `public_options: { id: 2 }`. With this information our isolated component can fetch the match and rerender itself.
+This page will render a match\_isolated\_score component for each match. If one of the isolated components gets rerendered we need the id in order to fetch the correct match. Because the server only resolves the isolated component instead of the whole UI, it does not know which match exactly is requested unless the client requests a rerender with the match id. This is why `public_context` is passed to the client side Vue.js component. So if match 2 should be rerendered the client requests the match\_isolated\_score component with `public_context: { id: 2 }`. With this information our isolated component can fetch the match from the database and rerender itself in isolation.
+
+### Emitting an event and set the public_context for an isolated component
+
+The above described `public_context` can also be set by an `onclick` component:
+
+```ruby
+class SomeIsolatedComponentTriggeredByOnclick < Matestack::Ui::IsolatedComponent
+
+  def response
+    div class: "public-context-set-by-onclick" do
+      plain "ID set by onclick: "
+      plain public_context.id
+    end
+  end
+
+  def authorized?
+    true
+  end
+
+end
+
+class ExamplePage < Matestack::Ui::Page
+
+  def response
+    onclick emit: 'replace_isolated_component_content', public_context: { id: 42 } do
+      button 'load 42 in isolated component'
+    end
+    # somewhere else on the UI
+    SomeIsolatedComponentTriggeredByOnclick.call(defer: true, replace_on: "replace_isolated_component_content")
+  end
+
+end
+```

@@ -62,6 +62,7 @@ module Matestack
               rerender_on: ctx.rerender_on,
               defer: ctx.defer,
               parent_class: isolated_parent ? isolated_parent.class.to_s : nil,
+              public_context: isolated_parent&.public_context.to_h || params[:public_context]
             }
           end
 

@@ -13,6 +13,7 @@ require "#{vue_js_base_path}/version"
 
 require "#{vue_js_base_path}/vue_attributes"
 require "#{vue_js_base_path}/vue"
+require "#{vue_js_base_path}/helper"
 require "#{vue_js_base_path}/components/app"
 require "#{vue_js_base_path}/components/page_switch"
 require "#{vue_js_base_path}/components/toggle"
