@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.2.0.beta1 Release - 2022-06-03
+
+- reworked context injection for isolated components
+- added onclick public_context setter approach, in order to enable e.g. async sidebars fetching dynamic data onclick
+- added drag&drop support (specs and docs missing)
+
 ## v3.1.0 Release - 2022-04-13
 
 - same as v3.1.0.rc2

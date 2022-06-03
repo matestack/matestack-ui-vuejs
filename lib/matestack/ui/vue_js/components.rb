@@ -35,6 +35,14 @@ module Matestack
              Matestack::Ui::VueJs::Components::Cable.(text, options, &block)
           end
 
+          def draggable(text=nil, options=nil, &block)
+             Matestack::Ui::VueJs::Components::Draggable.(text, options, &block)
+          end
+
+          def drop_zone(text=nil, options=nil, &block)
+             Matestack::Ui::VueJs::Components::DropZone.(text, options, &block)
+          end
+
           def matestack_form(text=nil, options=nil, &block)
              Matestack::Ui::VueJs::Components::Form::Form.(text, options, &block)
           end

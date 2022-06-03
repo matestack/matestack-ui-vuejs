@@ -35,6 +35,8 @@
   * [Transition Component API](built-in-reactivity/page-transitions/transition-component-api.md)
 * [Reactive Collections](built-in-reactivity/reactive-collections/README.md)
   * [Overview & API](built-in-reactivity/reactive-collections/overview.md)
+* [Drag & Drop](built-in-reactivity/drag-and-drop/README.md)
+  * [Overview & API](built-in-reactivity/drag-and-drop/overview.md)
 
 ## Custom Reactivity
 
