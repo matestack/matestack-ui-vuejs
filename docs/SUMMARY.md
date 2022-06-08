@@ -7,8 +7,9 @@
 ## Getting started
 
 * [Installation & Update](getting-started/installation-update/README.md)
-  * [Importmap Install Steps](getting-started/installation-update/importmap-install-steps.md)
   * [Webpacker Install Steps](getting-started/installation-update/webpacker-install-steps.md)
+  * [Importmap Install Steps](getting-started/installation-update/importmap-install-steps.md)
+  * [JSBundling-Rails Install](getting-started/installation-update/jsbundling-rails-install.md)
 * [Hello World](getting-started/hello-world.md)
 
 ## Built-in Reactivity

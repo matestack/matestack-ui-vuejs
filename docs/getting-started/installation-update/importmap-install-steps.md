@@ -20,6 +20,15 @@ Rails.application.config.assets.paths << Rails.root.join("app/matestack")
 config.importmap.cache_sweepers << Rails.root.join("app/matestack")
 ```
 
+### Assets Manifest
+
+`app/assets/config/manifest.js`
+
+```javascript
+// ...
+//= link_tree ../../matestack .js
+```
+
 ### Pins
 
 Add the pins manually!

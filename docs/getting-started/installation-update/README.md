@@ -72,16 +72,24 @@ For Example, your `app/views/layouts/application.html.erb` should look like this
 Don't apply the "matestack-ui" id to the body tag.
 {% endhint %}
 
-### Rails 7 importmap based JavaScript installation
+### JavaScript installation
+
+#### Webpacker > 5.x based JavaScript installation
+
+{% content-ref url="webpacker-install-steps.md" %}
+[webpacker-install-steps.md](webpacker-install-steps.md)
+{% endcontent-ref %}
+
+#### Rails 7 importmap based JavaScript installation
 
 {% content-ref url="importmap-install-steps.md" %}
 [importmap-install-steps.md](importmap-install-steps.md)
 {% endcontent-ref %}
 
-### Webpacker > 5.x based JavaScript installation
+#### JSBundling-Rails based JavaScript installation
 
-{% content-ref url="webpacker-install-steps.md" %}
-[webpacker-install-steps.md](webpacker-install-steps.md)
+{% content-ref url="jsbundling-rails-install.md" %}
+[jsbundling-rails-install.md](jsbundling-rails-install.md)
 {% endcontent-ref %}
 
 ### Usage with Turbolinks
