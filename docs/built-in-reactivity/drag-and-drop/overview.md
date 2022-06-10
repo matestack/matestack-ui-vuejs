@@ -94,3 +94,26 @@ end
   }
 }
 ```
+
+```ruby
+def example_drop
+  @dummy_model = DummyModel.find(drop_params[:draggable_id])
+
+  if @dummy_model.update(status: drop_params[:status])
+    render json: {
+      message: 'Dummy model was successfully moved.'
+    }, status: :created
+  else
+    render json: {
+      errors: @dummy_model.errors,
+      message: 'Dummy model could not be moved.'
+    }, status: :unprocessable_entity
+  end
+end
+
+private
+
+def drop_params
+  params.permit(:draggable_id, :status)
+end
+```
