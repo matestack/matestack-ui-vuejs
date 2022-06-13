@@ -36,14 +36,14 @@ end
 
 ## Devise sign in
 
-Using the default devise sign in views should work without a problem, but they will not be integrated with a Matestack app. Let's assume we have a profile Matestack app called `Profile::App`. If we want to take advantage of Matestack's transitions features \(not reloading our app layout between page transitions\) we can not use devise views, because we would need to redirect to them and therefore need to reload the whole page. Requiring us for example to implement our navigation twice. In our `Profile::App` and also in our devise sign in view.
+Using the default devise sign in views should work without a problem, but you can't use Matestack's features on the. If we want to take advantage of them, you can setup the views like shown below:
 
-Therefore we need to adjust a few things and create some pages. First we create a custom sign in page containing a form with email and password inputs.
+First we create a custom sign in page containing a form with email and password inputs.
 
-`app/matestack/profile/pages/sessions/sign_in.rb`
+`app/matestack/sessions/sign_in.rb`
 
 ```ruby
-class Profile::Pages::Sessions::SignIn < Matestack::Ui::Page
+class Sessions::SignIn < Matestack::Ui::Page
 
   def response
     h1 'Sign in'
@@ -63,10 +63,10 @@ class Profile::Pages::Sessions::SignIn < Matestack::Ui::Page
     {
       for: :user,
       method: :post,
-      path: user_session_path,
+      path: user_session_path(format: :json),
       success: {
         redirect: { # or transition, if your app layout does not change
-          follow_response: true
+          follow_response: true # or static path
         }
       },
       failure: {
@@ -76,6 +76,25 @@ class Profile::Pages::Sessions::SignIn < Matestack::Ui::Page
   end
 
 end
+```
+
+and a minimal layout:
+
+`app/matestack/sessions/layout.rb`
+
+```ruby
+class Sessions::Layout < Matestack::Ui::Layout
+
+  def response
+    matestack_vue_js_app do
+      page_switch do
+        yield
+      end
+    end
+  end
+
+end
+
 ```
 
 This page displays a form with an email and password input. The default required parameters for a devise sign in. It also contains a `toggle` component which gets shown when the event `sign_in_failure` is emitted. This event gets emitted in case our form submit was unsuccessful as we specified it in our `form_config` hash. If the form is successful our app will make a transition to the page the server would redirect to.
@@ -94,56 +113,26 @@ Rails.application.routes.draw do
 end
 ```
 
-Override the `new` action in order to render our sign in page and set the correct Matestack app in the controller. Also remember to include the components registry. This is necessary if you use custom components in your app or page, because without it Matestack can't resolve them.
+Override the `new` action in order to render our sign in page and set the correct Matestack app in the controller.
 
 `app/controllers/users/sessions_controller.rb`
 
 ```ruby
 class Users::SessionsController < Devise::SessionsController
 
-  matestack_layout Profile::Layout # specify the corresponding app to wrap pages in
+  respond_to :html, :json
 
   # override in order to render a page
   def new
-    render Profile::Pages::Sessions::SignIn
+    render Sessions::SignIn, matestack_layout: Sessions::Layout
   end
 
 end
 ```
 
-Now our sign in is nearly complete. Logging in with correct credentials works fine, but logging in with incorrect credentials triggers a page reload and doesn't show our error message.
-
-Devise usually responds with a 401 for wrong credentials but intercepts this response and redirects to the new action. This means our `form` component recieves the response of the `new` action, which would have a success status. Therefore it redirects you resulting in a rerendering of the sign in page. So our `form` component needs to recieve a error code in order to work as expected. To achieve this we need to provide a custom failure app.
-
-Create the custom failure app under `lib/devise/json_failure_app.rb` containing following code:
-
-```ruby
-class JsonFailureApp < Devise::FailureApp
-
-  def respond
-    return super unless request.content_type == 'application/json'
-    self.status = 401
-    self.content_type = :json
-  end
-
-end
-```
-
-We only want to overwrite the behavior of the failure app for request with `application/json` as content type, setting the status to a 401 unauthorized error and the content\_type to json.
-
-There is only one thing left, telling devise to use our custom failure app. Therefore add/update the following lines in `config/initializers/devise.rb`.
-
-```ruby
-require "#{Rails.root}/lib/devise/json_failure_app"
-
-config.warden do |manager|
-  manager.failure_app = JsonFailureApp
-end
-```
-
-That's it. When we now try to sign in with incorrect credentials the `matestack_form` component triggers the `sign_in_failure` event, which sets off our `toggle` component resulting in displaying the error message.
-
-**Wrap Up** That's it. Now you have a working sign in with devise fully integrated into Matestack. All we needed to do was creating a sign in page, updating our routes to use a custom session controller, overriding the new action, creating a custom failure app and updating the devise config.
+{% hint style="info" %}
+You can adpat the above shown example in order to implement all other Devise views in Matestack if you need them.
+{% endhint %}
 
 ## Devise sign out
 
@@ -171,9 +160,9 @@ end
 
 Notice the `method: :get` in the configuration hash. We use a http GET request to sign out, because the browser will follow the redirect send from devise session controller and then Matestack tries to load the page where we have been redirected to. When we would use a DELETE request the action we would be redirected to from the browser will be also requested with a http DELETE request, which will result in a rails routing error. Therefore we use GET and need to configure devise accordingly by changing the `sign_out_via` configuration parameter.
 
+`config/initializers/devise.rb`
+
 ```ruby
 # The default HTTP method used to sign out a resource. Default is :delete.
 config.sign_out_via = :get
 ```
-
-That's all we have to do.
