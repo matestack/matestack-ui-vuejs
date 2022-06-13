@@ -148,7 +148,7 @@ end
 ```
 
 {% hint style="info" %}
-`vue_name` should match the name your registered the Vue JS component with on the Vue app instance.
+`vue_name` should match the name you registered the Vue.js Javascript component with on the Vue.js app instance.
 {% endhint %}
 
 ### Passing data to the Vue.js JavaScript component
