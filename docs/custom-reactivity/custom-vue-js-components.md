@@ -147,6 +147,10 @@ class SomeComponent < Matestack::Ui::VueJsComponent
 end
 ```
 
+{% hint style="info" %}
+`vue_name` should match the name you registered the Vue.js Javascript component with on the Vue.js app instance.
+{% endhint %}
+
 ### Passing data to the Vue.js JavaScript component
 
 Like seen above, matestack renders a `component-config` prop as an attribute of the component tag. In order to fill in some date there, you should use the `setup` method like this:
