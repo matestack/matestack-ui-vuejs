@@ -32,8 +32,11 @@ describe "Form Component", type: :feature, js: true do
             form_input key: :foo, type: :text, id: "my-test-input"
             button 'Submit me!'
           end
-          toggle show_on: "form_submitted", id: 'async-form' do
+          toggle show_on: "form_submitted" do
             plain "form submitted!"
+          end
+          toggle show_on: "some_other_event" do
+            plain "some_other_event: form submitted!"
           end
         end
 
@@ -42,7 +45,7 @@ describe "Form Component", type: :feature, js: true do
             for: :my_object,
             method: :post,
             path: form_emit_success_submit_path,
-            emit: "form_submitted"
+            emit: "form_submitted, some_other_event"
           }
         end
       end
@@ -54,6 +57,7 @@ describe "Form Component", type: :feature, js: true do
 
       click_button "Submit me!"
       expect(page).to have_content("form submitted!")
+      expect(page).to have_content("some_other_event: form submitted!")
     end
   end
 

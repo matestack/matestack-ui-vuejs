@@ -70,13 +70,16 @@ describe "Form Component", type: :feature, js: true do
       class BaseExamplePage < BasePage
         def response
           super
-          toggle show_on: "my_form_success", id: 'async-form' do
+          toggle show_on: "my_form_success" do
             plain "{{vc.event.data.message}}"
+          end
+          toggle show_on: "some_other_event" do
+            plain "some_other_event: {{vc.event.data.message}}"
           end
         end
 
         def form_config
-          super.merge(success: { emit: "my_form_success" })
+          super.merge(success: { emit: "my_form_success, some_other_event" })
         end
       end
 
@@ -84,28 +87,36 @@ describe "Form Component", type: :feature, js: true do
       fill_in "my-test-input", with: "bar"
       click_button "Submit me!"
       expect(page).to have_content("server says: form submitted successfully")
+      expect(page).to have_content("some_other_event: server says: form submitted successfully")
     end
 
     it "Example 3 - Async submit request with failure event" do
       class BaseExamplePage < BasePage
         def response
           super
-          toggle show_on: "my_form_failure", id: 'async-form' do
+          toggle show_on: "my_form_failure" do
             plain "{{vc.event.data.message}}"
             plain "{{vc.event.data.errors}}"
+          end
+          toggle show_on: "some_other_failure_event" do
+            plain "some_other_failure_event: {{vc.event.data.message}}"
+            plain "some_other_failure_event: {{vc.event.data.errors}}"
           end
         end
 
         def form_config
-          super.merge(path: async_request_failure_form_test_path(id: 42), failure: { emit: "my_form_failure" })
+          super.merge(path: async_request_failure_form_test_path(id: 42), failure: { emit: "my_form_failure, some_other_failure_event" })
         end
       end
 
       visit "/base_example"
+
       fill_in "my-test-input", with: "bar"
       click_button "Submit me!"
       expect(page).to have_content("server says: form had errors")
       expect(page).to have_content("\"foo\": [ \"seems to be invalid\" ]")
+      expect(page).to have_content("some_other_failure_event: server says: form had errors")
+      expect(page).to have_content("some_other_failure_event: { \"foo\": [ \"seems to be invalid\" ] }")
     end
 
   end

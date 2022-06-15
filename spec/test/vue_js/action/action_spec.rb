@@ -132,6 +132,9 @@ describe "Action Component", type: :feature, js: true do
           toggle show_on: "my_action_success", hide_after: 300 do
             plain "{{vc.event.data.message}}"
           end
+          toggle show_on: "some_other_event", hide_after: 300 do
+            plain "some_other_event: {{vc.event.data.message}}"
+          end
         end
 
         def action_config
@@ -139,7 +142,7 @@ describe "Action Component", type: :feature, js: true do
             method: :post,
             path: success_action_test_path,
             success: {
-              emit: "my_action_success"
+              emit: "my_action_success, some_other_event"
             }
           }
         end
@@ -149,8 +152,10 @@ describe "Action Component", type: :feature, js: true do
       expect(page).not_to have_content("server says: good job!")
       click_button "Click me!"
       expect(page).to have_content("server says: good job!")
+      expect(page).to have_content("some_other_event: server says: good job!")
       sleep 0.3
       expect(page).not_to have_content("server says: good job!")
+      expect(page).not_to have_content("some_other_event: server says: good job!")
     end
 
     it "Example 5 - Async request with failure event emit used for notification" do
@@ -165,6 +170,9 @@ describe "Action Component", type: :feature, js: true do
           toggle show_on: "my_action_failure", hide_after: 300 do
             plain "{{vc.event.data.message}}"
           end
+          toggle show_on: "some_other_failure_event", hide_after: 300 do
+            plain "some_other_failure_event: {{vc.event.data.message}}"
+          end
         end
 
         def action_config
@@ -175,7 +183,7 @@ describe "Action Component", type: :feature, js: true do
               emit: "my_action_success"
             },
             failure: {
-              emit: "my_action_failure"
+              emit: "my_action_failure, some_other_failure_event"
             }
           }
         end
@@ -184,12 +192,15 @@ describe "Action Component", type: :feature, js: true do
       visit "/example"
       expect(page).not_to have_content("server says: good job!")
       expect(page).not_to have_content("server says: something went wrong!")
+      expect(page).not_to have_content("some_other_failure_event: server says: something went wrong!")
       click_button "Click me!"
       expect(page).not_to have_content("server says: good job!")
       expect(page).to have_content("server says: something went wrong!")
+      expect(page).to have_content("some_other_failure_event: server says: something went wrong!")
       sleep 0.3
       expect(page).not_to have_content("server says: good job!")
       expect(page).not_to have_content("server says: something went wrong!")
+      expect(page).not_to have_content("some_other_failure_event: server says: something went wrong!")
     end
 
     it "Example 6 - Async request with success/failure event used for transition" do

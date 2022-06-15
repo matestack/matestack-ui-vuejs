@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.2.0.beta2 Release - 2022-06-15
+
+- enabling multi event emission for async and form components
+
 ## v3.2.0.beta1 Release - 2022-06-03
 
 - reworked context injection for isolated components

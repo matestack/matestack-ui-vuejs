@@ -110,6 +110,11 @@ This event gets emitted right after form submit. In contrast to the `success` or
 ```ruby
 emit: "form_submitted"
 ```
+or multiple events:
+
+```ruby
+emit: "form_submitted, some_other_event"
+```
 
 ### Delay
 
@@ -138,6 +143,14 @@ To trigger further behavior, we can configure the success part of a `form` to em
 ```ruby
 success: {
   emit: 'my_form_success'
+}
+```
+
+or multiple events:
+
+```ruby
+success: {
+  emit: 'my_form_success, some_other_event'
 }
 ```
 
@@ -258,7 +271,13 @@ failure: {
   emit: 'my_form_failure'
 }
 ```
+or multiple events:
 
+```ruby
+failure: {
+  emit: 'my_form_failure, some_other_event'
+}
+```
 #### Perform transition
 
 We can also perform a transition that only gets triggered on failure:
