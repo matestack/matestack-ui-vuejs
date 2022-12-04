@@ -26,6 +26,7 @@
     "build": "rollup --config rollup.config.js"
   },
   "exports": {
-    ".": "./lib/matestack/ui/vue_js/index.js"
+    ".": "./lib/matestack/ui/vue_js/index.js",
+    "./*": "./*"
   }
 }
