@@ -21,7 +21,7 @@ RUN apk update && apk upgrade \
     && echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
     && apk add --no-cache \
     chromium=102.0.5005.182-r0 \
-    nss@3.78.1-r0 \
+    nss=3.78.1-r0 \
     && rm -rf /var/lib/apt/lists/* \
     /var/cache/apk/* \
     /usr/share/man \
