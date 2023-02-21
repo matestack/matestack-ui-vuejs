@@ -20,14 +20,14 @@ RUN apk update && apk upgrade \
     && echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
     && echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
     && apk add --no-cache \
-    chromium=102.0.5005.182-r0 \
-    nss=3.78.1-r0 \
+    chromium=86.0.4240.111-r0 \
+    nss=3.68.3-r0 \
     && rm -rf /var/lib/apt/lists/* \
     /var/cache/apk/* \
     /usr/share/man \
     /tmp/*
 
-RUN apk add chromium-chromedriver=102.0.5005.182-r0
+RUN apk add chromium-chromedriver=86.0.4240.111-r0
 
 ENV CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/
