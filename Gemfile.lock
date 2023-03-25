@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    matestack-ui-vuejs (3.1.0.rc1)
+    matestack-ui-vuejs (3.1.0)
       matestack-ui-core (~> 3.0.0.rc1)
       rails (>= 5.2)
 
@@ -110,7 +110,7 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
-    matestack-ui-core (3.0.0.rc2)
+    matestack-ui-core (3.0.1)
       rails (>= 5.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
@@ -243,7 +243,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma
-  rails (= 7.0.1)
+  rails (~> 7.0)
   rspec-rails (~> 4.0.2)
   selenium-webdriver
   simplecov
