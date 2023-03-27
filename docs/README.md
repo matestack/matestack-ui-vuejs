@@ -59,13 +59,16 @@ Additionally, most of `matestack-ui-vuejs` does not require Action Cable or Redi
 
 `matestack-ui-vuejs` is tested against:
 
+* Rails 7.0.1 + Ruby 3.2.1 + Vue.js 3.2.26
+* Rails 7.0.1 + Ruby 3.1.3 + Vue.js 3.2.26
+* Rails 7.0.1 + Ruby 3.1.3 + Vue.js 3.2.26
 * Rails 7.0.1 + Ruby 3.0.0 + Vue.js 3.2.26
+* Rails 6.1.1 + Ruby 3.2.1 + Vue.js 3.2.26
+* Rails 6.1.1 + Ruby 3.1.3 + Vue.js 3.2.26
 * Rails 6.1.1 + Ruby 3.0.0 + Vue.js 3.2.26
-* Rails 6.1.1 + Ruby 2.7.2 + Vue.js 3.2.26 &#x20;
-* Rails 6.0.3.4 + Ruby 2.6.6 + Vue.js 3.2.26
-* Rails 5.2.4.4 + Ruby 2.6.6 + Vue.js 3.2.26
+* Rails 6.1.1 + Ruby 2.7.2 + Vue.js 3.2.26
 
-Rails versions below 5.2 are not officially supported.
+Rails versions below 6.1 are not officially supported.
 
 Vue.js 2.x is supported when using the Compat build of Vue.js
 

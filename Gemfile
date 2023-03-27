@@ -11,10 +11,10 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-gem 'rails', '7.0.1'
+gem 'rails', '~> 7.0.4'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 4.0.2'
+  gem 'rspec-rails', '~> 6.0.0'
   gem 'capybara'
   gem 'webpacker', '~> 5.0'
   gem 'pg', '>= 0.18', '< 2.0'
