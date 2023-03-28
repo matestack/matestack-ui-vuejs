@@ -3,26 +3,52 @@ include VueJsSpecUtils
 
 describe "Onclick Component", type: :feature, js: true, aggregate_failures: true do
 
-  context 'when given single event' do
-    it "emits event" do
-      class ExamplePage < Matestack::Ui::Page
-        def response
-          onclick emit: 'show_message' do
-            button 'click me'
-          end
-          toggle show_on: 'show_message' do
-            plain "some message"
+  context 'when given a single event' do
+    context 'as a symbol' do
+      it "emits event" do
+        class ExamplePage < Matestack::Ui::Page
+          def response
+            onclick emit: :show_message do
+              button 'click me'
+            end
+            toggle show_on: 'show_message' do
+              plain "some message"
+            end
           end
         end
-      end
-  
-      visit "/example"
-      within 'body' do        
-        expect(page).not_to have_content("some message")
     
-        click_button 'click me'
+        visit "/example"
+        within 'body' do        
+          expect(page).not_to have_content("some message")
+      
+          click_button 'click me'
+  
+          expect(page).to have_content("some message")
+        end
+      end
+    end
 
-        expect(page).to have_content("some message")
+    context 'as a string' do
+      it "emits event" do
+        class ExamplePage < Matestack::Ui::Page
+          def response
+            onclick emit: 'show_message' do
+              button 'click me'
+            end
+            toggle show_on: 'show_message' do
+              plain "some message"
+            end
+          end
+        end
+    
+        visit "/example"
+        within 'body' do        
+          expect(page).not_to have_content("some message")
+      
+          click_button 'click me'
+  
+          expect(page).to have_content("some message")
+        end
       end
     end
   
