@@ -8,7 +8,7 @@ The `toggle` component accepts the following parameters:
 
 ### show\_on - optional
 
-The `show_on` option lets us define an event on which the component gets shown. The content is still rendered on init pageload, but simply hidden in the browser until the event is emitted. If you want to have proper deferred loading, please refer to [defer](toggle-component-api.md#defer)
+The `show_on` option lets us define an event on which the component gets shown. The content is still rendered on init pageload, but simply hidden in the browser until the event is emitted.
 
 ```ruby
 toggle show_on: 'my_event' do
@@ -21,7 +21,11 @@ end
 You can pass in multiple, comma-separated events on which the component should be shown.
 
 ```ruby
-toggle show_on: 'my_event, some_other_event'
+toggle show_on: 'my_event, some_other_event' do
+  div id: 'my-div' do
+    plain 'I was not here before any of the events'
+  end
+end
 ```
 
 ### hide\_on - optional
@@ -39,7 +43,11 @@ end
 You can pass in multiple, comma-separated events on which the component should be hidden.
 
 ```ruby
-toggle hide_on: 'my_event, some_other_event'
+toggle hide_on: 'my_event, some_other_event' do
+  div id: 'my-div' do
+    plain 'You will not see me after any of the events'
+  end
+end
 ```
 
 ### hide\_after - optional
@@ -90,11 +98,11 @@ class ExamplePage < Matestack::Ui::Page
 end
 ```
 
-_After_ our event was fired, the timestamp only is visible on our page!
+Only _After_ our event was fired is the timestamp visible on our page!
 
 ### Hide on event
 
-On our example page, we wrap a simple timestamp in an toggle component and tell it to hide it when the event `my_event` gets triggered.
+On our example page, we wrap a simple timestamp in an toggle component and tell it to hide itself when the event `my_event` gets triggered.
 
 ```ruby
 class ExamplePage < Matestack::Ui::Page
@@ -112,7 +120,7 @@ end
 
 As expected, the timestamp is only visible _before_ our event was fired and is hidden/invisible _after_ the event!
 
-### Hide after show on event
+### Hide after + show on event
 
 On our example page, we wrap a simple timestamp in an toggle component and tell it to show up when the event `my_event` gets triggered and be hidden after 1000 milliseconds.
 
@@ -130,11 +138,11 @@ class ExamplePage < Matestack::Ui::Page
 end
 ```
 
-In this case, the timestamp only is visible _after_ our event was fired, but only for a certain amount of time. After the time is up, it gets hidden!
+In this case, the timestamp is only visible _after_ our event was fired, but just for a certain amount of time. After the specified time is up, it gets hidden!
 
 ### Show on event with event payload
 
-On our example page, we wrap our toggle event around a placeholder for the event message.
+On our example page, we wrap some plaintext in our toggle component around a placeholder for the event message.
 
 ```ruby
 class ExamplePage < Matestack::Ui::Page
