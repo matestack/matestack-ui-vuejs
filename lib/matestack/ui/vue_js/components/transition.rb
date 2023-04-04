@@ -5,7 +5,7 @@ module Matestack
         class Transition < Matestack::Ui::VueJs::Vue
           vue_name 'matestack-ui-core-transition'
 
-          optional :path, :delay
+          optional :path, :emit, :delay
 
           def response
             a attributes do
@@ -29,6 +29,7 @@ module Matestack
           def vue_props
             {
               link_path: ctx.path,
+              emit: ctx.emit,
               delay: ctx.delay,
             }
           end
