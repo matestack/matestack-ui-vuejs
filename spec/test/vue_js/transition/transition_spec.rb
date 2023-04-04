@@ -1,7 +1,7 @@
 require 'rails_vue_js_spec_helper'
 include VueJsSpecUtils
 
-describe "Transition Component", type: :feature, js: true do
+describe "Transition Component", type: :feature, js: true, aggregate_failures: true do
 
   before :all do
     module Example
@@ -13,10 +13,10 @@ describe "Transition Component", type: :feature, js: true do
         matestack_vue_js_app do
           h1 "My Example App Layout"
           nav do
-            transition path: page1_path do
+            transition path: page1_path, emit: "custom_event_1, custom_event_2" do
               button "Page 1"
             end
-            transition path: page2_path(some_other_param: "bar") do
+            transition path: page2_path(some_other_param: "bar"), emit: "custom_event_3" do
               button "Page 2"
             end
             transition path: page3_path, delay: 1500 do
@@ -30,6 +30,15 @@ describe "Transition Component", type: :feature, js: true do
           end
           toggle show_on: "page_loading_triggered" do
             plain "started a transition"
+          end
+          toggle show_on: "custom_event_1" do
+            plain "custom_event_1 triggered"
+          end
+          toggle show_on: "custom_event_2" do
+            plain "custom_event_2 triggered"
+          end
+          toggle show_on: "custom_event_3" do
+            plain "custom_event_3 triggered"
           end
         end
       end
@@ -281,6 +290,34 @@ describe "Transition Component", type: :feature, js: true do
     expect(page).to have_selector("body.not-reloaded")
     expect(page).not_to have_content("This is Page 1")
     expect(page).to have_content("This is Page 2")
+  end
+
+  it "Example 7 - Emits specified custom events on transition click" do
+    visit "/my_example_app/page1"
+    expect(page).to have_content("My Example App Layout")
+    expect(page).to have_content("This is Page 1")
+    expect(page).to have_no_content("This is Page 2")
+    expect(page).to have_no_content("started a transition")
+    page.evaluate_script('document.body.classList.add("not-reloaded")')
+
+    click_button("Page 2")
+    expect(page).to have_content("started a transition")
+    expect(page).to have_content("custom_event_3 triggered")
+    expect(page).to have_no_content("custom_event_1 triggered")
+    expect(page).to have_no_content("custom_event_2 triggered")
+    expect(page).to have_content("My Example App Layout")
+    expect(page).to have_selector("body.not-reloaded")
+    expect(page).to have_no_content("This is Page 1")
+    expect(page).to have_content("This is Page 2")
+
+    click_button("Page 1")
+    expect(page).to have_content("started a transition")
+    expect(page).to have_content("custom_event_1 triggered")
+    expect(page).to have_content("custom_event_2 triggered")
+    expect(page).to have_content("My Example App Layout")
+    expect(page).to have_selector("body.not-reloaded")
+    expect(page).to have_no_content("This is Page 2")
+    expect(page).to have_content("This is Page 1")
   end
 
   # supposed to work, but doesn't. Suspect Vue is the culprint here
