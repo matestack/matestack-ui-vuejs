@@ -1,4 +1,15 @@
 class Demo::VueJs::Pages::FirstPage < Matestack::Ui::Page
+  include Matestack::Ui::VueJs::Components::Collection::Helper
+
+  def prepare
+    my_collection_id = "my-first-collection"
+    current_order = get_collection_order(my_collection_id)
+    my_base_query = DummyModel.all.order(current_order)
+    @my_collection = set_collection({
+                                      id: my_collection_id,
+                                      data: my_base_query
+                                    })
+  end
 
   def response
     h2 "First page"
@@ -29,9 +40,60 @@ class Demo::VueJs::Pages::FirstPage < Matestack::Ui::Page
     hr
 
     toggle_component_demo
+
+    hr
+
+    collection_component_demo
   end
 
   private
+
+  def collection_component_demo
+    heading size: 2, text: "My Collection"
+    ordering
+    content
+  end
+
+  def ordering
+    collection_order @my_collection.config do
+      plain "sort by:"
+      collection_order_toggle key: :title do
+        button do
+          plain "title"
+          collection_order_toggle_indicator key: :title,
+                                            default: ' created_at',
+                                            slots: {
+                                              asc: method(:asc_indicator),
+                                              desc: method(:desc_indicator)
+                                            }
+        end
+      end
+    end
+  end
+
+  def asc_indicator
+    unescaped " &#8593;"
+  end
+
+  def desc_indicator
+    plain ' desc'
+  end
+
+  def content
+    async rerender_on: "my-first-collection-update", id: "my-collection" do
+      collection_content @my_collection.config do
+        ul do
+          @my_collection.paginated_data.each do |dummy|
+            li class: "item" do
+              plain dummy.title
+              plain " "
+              plain dummy.description
+            end
+          end
+        end
+      end
+    end
+  end
 
   def toggle_component_demo
     h3 'Explore the toggle component'

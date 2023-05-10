@@ -4,24 +4,32 @@ module Matestack
       module Components
         module Collection
           class OrderToggleIndicator < Matestack::Ui::Component
-
-            required :key, :asc, :desc
-            optional :default
+            required :key
+            optional :default, :asc, :desc
 
             def response
               span do
-                span "v-if": "vc.ordering['#{ctx.key}'] === undefined" do
-                  plain ctx.default
+                span "v-if": "vc.isDefaultOrdering('#{ctx.key}')" do
+                  render_slot_or_plaintext(:default)
                 end
-                unescaped "{{
-                  vc.orderIndicator(
-                    '#{ctx.key}',
-                    { asc: '#{ctx.asc}', desc: '#{ctx.desc}'}
-                  )
-                }}"
+                span "v-if": "vc.isAscendingOrdering('#{ctx.key}')" do
+                  render_slot_or_plaintext(:asc)
+                end
+                span "v-if": "vc.isDescendingOrdering('#{ctx.key}')" do
+                  render_slot_or_plaintext(:desc)
+                end
               end
             end
 
+            private
+
+            def render_slot_or_plaintext(key)
+              if slots && slots[key]
+                slot key
+              else
+                plain ctx.send(key)
+              end
+            end
           end
         end
       end

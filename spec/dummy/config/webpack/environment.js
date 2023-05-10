@@ -6,6 +6,7 @@ const customWebpackConfig = {
   resolve: {
     alias: {
       vue: 'vue/dist/vue.esm-bundler',
+      'matestack-ui-vuejs': 'matestack-ui-vuejs/lib/matestack/ui/vue_js/index.js' // in order not to use the esm package
       // vue: '@vue/compat/dist/vue.esm-bundler',
     }
   },

@@ -4,7 +4,6 @@ include VueJsSpecUtils
 describe "Collection Component", type: :feature, js: true do
 
   describe 'order' do
-
     before :each do
       TestModel.destroy_all
       TestModel.create([
@@ -31,9 +30,9 @@ describe "Collection Component", type: :feature, js: true do
           current_order = get_collection_order(my_collection_id)
           my_base_query = TestModel.all.order(current_order)
           @my_collection = set_collection({
-            id: my_collection_id,
-            data: my_base_query
-          })
+                                            id: my_collection_id,
+                                            data: my_base_query
+                                          })
         end
 
         def response
@@ -48,12 +47,23 @@ describe "Collection Component", type: :feature, js: true do
             collection_order_toggle key: :title do
               button do
                 plain "title"
-                collection_order_toggle_indicator key: :title, default: ' created_at', asc: ' asc', desc: ' desc'
-                # try line below
-                # collection_order_toggle_indicator default: ' created_at', asc: ' asc', desc: ' desc'
+                collection_order_toggle_indicator key: :title,
+                                                  default: ' created_at',
+                                                  slots: {
+                                                    asc: method(:asc_indicator),
+                                                    desc: method(:desc_indicator)
+                                                  }
               end
             end
           end
+        end
+
+        def asc_indicator
+          unescaped " &#8593;"
+        end
+
+        def desc_indicator
+          plain ' desc'
         end
 
         def content
@@ -80,11 +90,11 @@ describe "Collection Component", type: :feature, js: true do
 
       click_button "title created_at"
       sleep 0.2 # otherwise getting stale element error, quick fix
-      expect(page).to have_button("title asc")
+      expect(page).to have_button("title ↑")
       expect(all(".item").first.text).to eq "some-title-1 some-description-1"
       expect(all(".item").last.text).to eq "some-title-9 some-description-9"
 
-      click_button "title asc"
+      click_button "title ↑"
       sleep 0.2 # otherwise getting stale element error, quick fix
       expect(page).to have_button("title desc")
       expect(all(".item").first.text).to eq "some-title-9 some-description-9"
