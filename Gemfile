@@ -11,13 +11,15 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-gem 'rails', '~> 7.2.0'
+gem 'rails', '~> 8.0'
+
+gem 'propshaft'
+gem 'jsbundling-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 7.0'
   gem 'capybara'
-  gem 'webpacker', '~> 5.0'
-  gem 'pg', '>= 0.18', '< 2.0'
+  gem 'pg', '>= 1.0'
   gem 'selenium-webdriver'
   gem 'puma'
   gem 'simplecov', require: false, group: :test

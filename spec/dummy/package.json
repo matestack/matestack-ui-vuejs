@@ -1,15 +1,18 @@
 {
   "name": "dummy",
   "private": true,
+  "scripts": {
+    "build": "esbuild app/javascript/*.js --bundle --outdir=app/assets/builds"
+  },
   "dependencies": {
-    "@babel/preset-env": "^7.16.7",
     "@rails/actioncable": "^6.0.0",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "^5.0.0",
+    "axios": "^0.21.1",
+    "mitt": "^3.0.0",
+    "vue": "^3.2.26",
     "matestack-ui-vuejs": "../../"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.10.2"
+    "esbuild": "^0.25.0"
   },
   "browserslist": [
     "defaults",
