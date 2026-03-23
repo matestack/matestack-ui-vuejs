@@ -61,6 +61,8 @@ jobs:
       - name: Build JS assets
         run: bundle exec rails webpacker:compile
         working-directory: spec/dummy
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
 
       - name: Set up database
         run: bundle exec rails db:create db:migrate
