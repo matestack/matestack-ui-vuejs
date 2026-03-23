@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Matestack
   module Ui
     module VueJs

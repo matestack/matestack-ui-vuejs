@@ -158,8 +158,8 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        serialize :some_data, Array
-        serialize :more_data, Array
+        serialize :some_data, coder: JSON
+        serialize :more_data, coder: JSON
         validates :more_data, presence: true
 
         def self.array_options

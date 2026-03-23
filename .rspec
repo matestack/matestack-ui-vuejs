@@ -1,1 +1,2 @@
 --require spec_helper
+--exclude-pattern "spec/dummy/node_modules/**/*_spec.rb"

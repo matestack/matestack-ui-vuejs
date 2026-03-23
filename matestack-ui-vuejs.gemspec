@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib,vendor}/**/*", "LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "matestack-ui-core", '~> 3.0.0.rc1'
-  s.add_dependency "rails", '>= 5.2'
+  s.required_ruby_version = '>= 3.2'
+
+  s.add_dependency "matestack-ui-core", '~> 4.0.beta'
+  s.add_dependency "rails", '>= 8.0'
 end
