@@ -13,7 +13,7 @@ gemspec
 
 gem 'rails', '~> 8.0'
 
-gem 'matestack-ui-core', path: '../matestack-ui-core'
+gem 'matestack-ui-core', git: 'https://github.com/matestack/matestack-ui-core', branch: 'upgrade/rails8'
 
 gem 'propshaft'
 gem 'jsbundling-rails'

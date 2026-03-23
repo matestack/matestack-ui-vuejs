@@ -41,13 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check out matestack-ui-core
-        uses: actions/checkout@v4
-        with:
-          repository: matestack/matestack-ui-core
-          ref: upgrade/rails8
-          path: ../matestack-ui-core
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
