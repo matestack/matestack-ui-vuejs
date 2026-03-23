@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.0.0.beta1 Release - 2026-03-23
+
+### Breaking Changes
+
+- **Rails >= 8.0 required** (dropped support for Rails 5.2, 6.x, 7.x)
+- **Ruby >= 3.2 required** (dropped support for Ruby 2.6, 2.7, 3.0, 3.1)
+- Replaced webpacker with jsbundling-rails (esbuild) for JS asset compilation
+- Updated `matestack-ui-core` dependency to `~> 4.0.beta`
+
+### Improvements
+
+- Full compatibility with Rails 8.1, Ruby 3.4, and Vue.js 3
+- Fixed Rails 8 compatibility: removed `nested_attrs_error_index_patch` (no longer needed, use `index_errors: true` on the association instead)
+- CI migrated from Docker Compose to native GitHub Actions (Ruby 3.4, Node 20, Postgres 16)
+
 ## v3.1.0 Release - 2022-04-13
 
 - same as v3.1.0.rc2
