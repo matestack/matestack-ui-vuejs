@@ -59,7 +59,7 @@ jobs:
         working-directory: spec/dummy
 
       - name: Build JS assets
-        run: npm run build
+        run: bundle exec rails webpacker:compile
         working-directory: spec/dummy
 
       - name: Set up database
