@@ -10,8 +10,6 @@
 
 Boost your productivity & easily create reactive web UIs in pure Ruby. Easily extend with pure JavaScript if required. No Opal involved.
 
-**New repo, old git history? This repo was duplicated from `matestack-ui-core` in order to extract Vue.js features into `matestack-ui-vuejs` in Feburary 2022**
-
 ## About
 
 `matestack-ui-vuejs` ships all you need to build **reactive** UIs in **pure Ruby** orchestrating prebuilt Vue.js components with a simple Ruby DSL.
@@ -46,17 +44,15 @@ Additionally, most of `matestack-ui-vuejs` does not require Action Cable or Redi
 
 `matestack-ui-vuejs` requires `matestack-ui-core`
 
-`matestack-ui-vuejs` is tested against:
+> **Note:** Version 4.0.0 is a pre-release (`4.0.0.beta1`) targeting Rails 8 and Ruby 3.2+. If you are on an older Rails/Ruby version, use the `3.x` release series.
 
-* Rails 7.0.1 + Ruby 3.0.0 + Vue.js 3.2.26
-* Rails 6.1.1 + Ruby 3.0.0 + Vue.js 3.2.26
-* Rails 6.1.1 + Ruby 2.7.2 + Vue.js 3.2.26
-* Rails 6.0.3.4 + Ruby 2.6.6 + Vue.js 3.2.26
-* Rails 5.2.4.4 + Ruby 2.6.6 + Vue.js 3.2.26
+`matestack-ui-vuejs` 4.x is tested against:
 
-Rails versions below 5.2 are not officially supported.
+* Rails 8.1 + Ruby 3.4 + Vue.js 3
 
-Vue.js 2.x is supported when using the Compat build of Vue.js
+**Requirements:** Rails >= 8.0, Ruby >= 3.2, Vue.js 3
+
+For older Rails/Ruby versions, use `matestack-ui-vuejs` 3.x.
 
 ## Documentation/Installation
 
