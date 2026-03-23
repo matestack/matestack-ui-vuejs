@@ -1,4 +1,10 @@
 PATH
+  remote: ../matestack-ui-core
+  specs:
+    matestack-ui-core (3.0.1)
+      rails (>= 5.2)
+
+PATH
   remote: .
   specs:
     matestack-ui-vuejs (3.1.0)
@@ -140,8 +146,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.1.0)
-    matestack-ui-core (3.0.1)
-      rails (>= 5.2)
     matrix (0.4.3)
     method_source (1.1.0)
     mini_mime (1.1.5)
@@ -319,6 +323,7 @@ DEPENDENCIES
   debug
   generator_spec
   jsbundling-rails
+  matestack-ui-core!
   matestack-ui-vuejs!
   pg (>= 1.0)
   propshaft

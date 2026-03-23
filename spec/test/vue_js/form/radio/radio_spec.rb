@@ -156,7 +156,7 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        enum status: [ :active, :archived ]
+        enum :status, [ :active, :archived ]
       end
 
       class ExamplePage < Matestack::Ui::Page
@@ -200,7 +200,7 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        enum status: [ :active, :archived ]
+        enum :status, [ :active, :archived ]
       end
 
       class ExamplePage < Matestack::Ui::Page
@@ -244,7 +244,7 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        enum status: { active: 0, archived: 1 }
+        enum :status, { active: 0, archived: 1 }
       end
 
       class ExamplePage < Matestack::Ui::Page
@@ -288,7 +288,7 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        enum status: { active: 0, archived: 1 }
+        enum :status, { active: 0, archived: 1 }
       end
 
       class ExamplePage < Matestack::Ui::Page
@@ -331,7 +331,7 @@ describe "Form Component", type: :feature, js: true do
       Object.send(:remove_const, :TestModel)
 
       class TestModel < ApplicationRecord
-        enum status: { active: 0, archived: 1 }
+        enum :status, { active: 0, archived: 1 }
       end
 
       class ExamplePage < Matestack::Ui::Page

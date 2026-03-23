@@ -2,7 +2,7 @@
   "name": "dummy",
   "private": true,
   "scripts": {
-    "build": "esbuild app/javascript/*.js --bundle --outdir=app/assets/builds"
+    "build": "esbuild app/javascript/*.js --bundle --outdir=app/assets/builds --alias:vue=./node_modules/vue/dist/vue.esm-bundler.js"
   },
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
